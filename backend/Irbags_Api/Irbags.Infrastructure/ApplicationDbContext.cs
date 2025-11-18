@@ -30,14 +30,29 @@ namespace Irbags.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            // Product - Tag (one-to-many)
+            modelBuilder.Entity<User>(user =>
+            {
+                user.HasKey(u => u.Id);
+                user.HasIndex(u => u.Login).IsUnique();
+
+                user.HasOne(u => u.Token)
+                    .WithOne(t => t.User)
+                    .HasForeignKey<Token>(t => t.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Token>(token =>
+            {
+                token.HasKey(t => t.Id);
+                token.Property(t => t.RefreshToken).IsRequired();
+            });
+
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Tag)
                 .WithMany(t => t.Products)
                 .HasForeignKey(p => p.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ProductColorSize relationships
             modelBuilder.Entity<ProductColorSize>()
                 .HasOne(pcs => pcs.Product)
                 .WithMany(p => p.ProductColorSizes)
@@ -56,7 +71,6 @@ namespace Irbags.Infrastructure
                 .HasForeignKey(pcs => pcs.SizeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Ограничения для строк
             modelBuilder.Entity<Product>()
                 .Property(p => p.ShortDescription)
                 .HasMaxLength(150);
@@ -77,7 +91,6 @@ namespace Irbags.Infrastructure
                 .Property(c => c.Name)
                 .HasMaxLength(100);
 
-            // Order: value objects / owned types (person_name, delivery_address, phone, email)
             modelBuilder.Entity<Order>(order =>
             {
                 order.Property(o => o.ProductId).IsRequired();
@@ -104,7 +117,6 @@ namespace Irbags.Infrastructure
                     email.Property(e => e.Value).HasMaxLength(25).IsRequired();
                 });
 
-                // Enum storage (по умолчанию EF хранит enum как int) — опционально явно:
                 order.Property(o => o.DeliveryType).HasConversion<int>();
                 order.Property(o => o.PaymentType).HasConversion<int>();
             });

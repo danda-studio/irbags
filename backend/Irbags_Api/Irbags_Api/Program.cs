@@ -1,12 +1,15 @@
 using Irbags.Application;
+using Irbags.Application.Models.Response;
 using Irbags.Application.Store;
 using Irbags.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 
@@ -16,9 +19,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddSwaggerGen();
 }
 
-// Конфигурация
 var configuration = builder.Configuration;
-
 
 string connectionString;
 var host = Environment.GetEnvironmentVariable("Host");
@@ -37,18 +38,43 @@ else
         ?? throw new Exception("Не найдена строка подключения");
 }
 
+
+var jwtOptions = configuration.GetSection("Jwt")
+                              .Get<JwtSettings>() ?? new JwtSettings();
+
+builder.Services.AddSingleton(jwtOptions);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opts =>
+    {
+        byte[] signingKeyBytes = Encoding.UTF8
+            .GetBytes(jwtOptions.Key);
+
+        opts.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString,
     b => b.MigrationsAssembly("Irbags.Infrastructure")));
 
-// Регистрация сервисов приложения/инфраструктуры
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
