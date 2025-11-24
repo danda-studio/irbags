@@ -4,6 +4,7 @@ using Irbags.Application.Store;
 using Irbags.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
@@ -62,6 +63,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    //options.AddPolicy("AllowSpecificOrigin", policy =>
+    //{
+    //    policy.WithOrigins("https://danda-studio.github.io", "https://rcc-hrmo.vercel.app", "https://rsk-olimpiyskiy.ru")
+    //          .AllowAnyMethod()
+    //          .AllowAnyHeader()
+    //          .AllowCredentials();
+    //});
+
+    options.AddPolicy("AllowLocalhost3000", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://80.94.250.192:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
@@ -74,6 +94,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalhost3000");
 
 if (app.Environment.IsDevelopment())
 {

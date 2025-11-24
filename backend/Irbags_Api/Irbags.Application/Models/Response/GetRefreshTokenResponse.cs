@@ -1,5 +1,4 @@
-﻿using Irabags.Core.User;
-
+﻿
 namespace Irbags.Application.Models.Response
 {
     public class GetRefreshTokenResponse

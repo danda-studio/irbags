@@ -1,6 +1,6 @@
-﻿using Irabags.Core.Order;
-using Irabags.Core.Product;
-using Irabags.Core.User;
+﻿using Irbags.Core.Order;
+using Irbags.Core.Product;
+using Irbags.Core.User;
 using Microsoft.EntityFrameworkCore;
 
 

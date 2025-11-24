@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Irabags.Core\Irabags.Core.csproj" />
+    <ProjectReference Include="..\Irabags.Core\Irbags.Core.csproj" />
+    <ProjectReference Include="..\Irbags.Core\Irbags.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

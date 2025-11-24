@@ -1,5 +1,5 @@
 ﻿
-namespace Irabags.Core.Product
+namespace Irbags.Core.Product
 {
     public class ProductCard
     {

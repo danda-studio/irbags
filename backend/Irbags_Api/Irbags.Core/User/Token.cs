@@ -1,5 +1,5 @@
 ﻿
-namespace Irabags.Core.User
+namespace Irbags.Core.User
 {
     public class Token
     {

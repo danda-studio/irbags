@@ -1,4 +1,4 @@
-﻿using Irabags.Core.User;
+﻿using Irbags.Core.User;
 using Irbags.Application.Store;
 using Microsoft.EntityFrameworkCore;
 
