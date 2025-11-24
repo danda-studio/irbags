@@ -1,0 +1,47 @@
+import { defineNuxtModule, createResolver, addComponent } from "@nuxt/kit";
+import { readdirSync, statSync, existsSync } from "fs";
+import { join } from "path";
+
+export interface ModuleOptions {
+  prefix?: string;
+}
+
+export default defineNuxtModule<ModuleOptions>({
+  meta: {
+    name: "irbags-ui",
+    configKey: "irbagsUi",
+    compatibility: {
+      nuxt: "^3.0.0",
+    },
+  },
+  defaults: {
+    prefix: "IBG",
+  },
+
+  setup(_options, _nuxt) {
+    const resolver = createResolver(import.meta.url);
+    const componentsDir = resolver.resolve("./runtime/components");
+
+    // Получаем элементы первого уровня
+    const entries = readdirSync(componentsDir);
+
+    entries.forEach((entry) => {
+      const dirPath = join(componentsDir, entry);
+
+      // Берем только папки
+      if (!statSync(dirPath).isDirectory()) return;
+
+      // Ищем .vue файл с таким же именем, как папка
+      const componentFile = join(dirPath, `${entry}.vue`);
+
+      if (!existsSync(componentFile)) return;
+
+      const componentName = _options.prefix + entry;
+
+      addComponent({
+        name: componentName,
+        filePath: componentFile,
+      });
+    });
+  },
+});
