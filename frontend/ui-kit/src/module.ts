@@ -1,5 +1,6 @@
 import { defineNuxtModule, createResolver, addComponent } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
+import { installModule, installModules } from "nuxt/kit";
 import { join } from "path";
 
 export interface ModuleOptions {
@@ -18,7 +19,18 @@ export default defineNuxtModule<ModuleOptions>({
     prefix: "IBG",
   },
 
-  setup(_options, _nuxt) {
+  async setup(_options, _nuxt) {
+    // 1. Создаем Map модулей
+    const modulesToInstall = new Map([
+      ['@nuxt/ui', {}], // второй аргумент — это опции модуля
+    ])
+
+    // 2. Set для уже установленных модулей
+    const installed = new Set([])
+
+    // 3. Ставим модуль пакетом
+    await installModules(modulesToInstall, installed, _nuxt)
+
     const resolver = createResolver(import.meta.url);
     const componentsDir = resolver.resolve("./runtime/components");
 
@@ -42,6 +54,6 @@ export default defineNuxtModule<ModuleOptions>({
         name: componentName,
         filePath: componentFile,
       });
-    });
+    })
   },
 });

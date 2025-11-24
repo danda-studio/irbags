@@ -1,5 +1,3 @@
 <template>
-  <UApp>
-    <UButton color="primary">Click me</UButton>
-  </UApp>
+  <UButton color="primary">Click me</UButton>
 </template>

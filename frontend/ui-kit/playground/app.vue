@@ -1,7 +1,8 @@
 <template>
-  <IBGButton />
+  <IBGApp>
+    <IBGButton />
+  </IBGApp>
 </template>
 
 <script setup>
-import { IBGButton } from "../src/runtime/components";
 </script>
