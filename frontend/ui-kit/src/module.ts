@@ -1,6 +1,11 @@
-import { defineNuxtModule, createResolver, addComponent } from "@nuxt/kit";
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponent,
+  installModules,
+  addTemplate,
+} from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
-import { installModule, installModules } from "nuxt/kit";
 import { join } from "path";
 
 export interface ModuleOptions {
@@ -22,17 +27,25 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     // 1. Создаем Map модулей
     const modulesToInstall = new Map([
-      ['@nuxt/ui', {}], // второй аргумент — это опции модуля
-    ])
+      ["@nuxt/ui", {}], // второй аргумент — это опции модуля
+    ]);
 
     // 2. Set для уже установленных модулей
-    const installed = new Set([])
+    const installed = new Set([]);
 
     // 3. Ставим модуль пакетом
-    await installModules(modulesToInstall, installed, _nuxt)
+    await installModules(modulesToInstall, installed, _nuxt);
 
     const resolver = createResolver(import.meta.url);
     const componentsDir = resolver.resolve("./runtime/components");
+
+    const cssPath = resolver.resolve("./runtime/assets/css/main.css");
+    _nuxt.options.css.push(cssPath);
+
+    addTemplate({
+      filename: "app.config.ts",
+      src: resolver.resolve("./runtime/app.config.ts"),
+    });
 
     // Получаем элементы первого уровня
     const entries = readdirSync(componentsDir);
@@ -54,6 +67,6 @@ export default defineNuxtModule<ModuleOptions>({
         name: componentName,
         filePath: componentFile,
       });
-    })
+    });
   },
 });

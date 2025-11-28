@@ -1,8 +1,7 @@
 <template>
   <IBGApp>
-    <IBGButton />
+    <IBGButton class="" />
   </IBGApp>
 </template>
 
-<script setup>
-</script>
+<script setup></script>

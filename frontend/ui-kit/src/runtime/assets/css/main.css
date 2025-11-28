@@ -1,2 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+:root {
+  --ui-color-secondary: "#DADADA";
+  --ui-color-error: "#FF2A2A";
+  --ui-color-neutral-900: #ffffff;
+  --ui-color-neutral-800: #f7f7f7;
+  --ui-color-neutral-700: #e5e5e5;
+}
