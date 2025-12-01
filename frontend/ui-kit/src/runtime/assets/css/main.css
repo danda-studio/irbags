@@ -2,13 +2,6 @@
 @import "@nuxt/ui";
 
 :root {
-  --ui-color-secondary: #DADADA;
-  --ui-color-error-500: #FF2A2A;
-  --ui-color-neutral-900: #ffffff;
-  --ui-color-neutral-800: #f7f7f7;
-  --ui-color-neutral-700: #e5e5e5;
-
-  --ui-color-error-500: #FF2A2A;
-
-  --ui-example: blue;
+  --ui-color-error-500: #ff2a2a;
+  --ui-text-inverted: #dadada;
 }
