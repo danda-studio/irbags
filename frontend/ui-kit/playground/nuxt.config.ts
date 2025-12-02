@@ -1,16 +1,15 @@
-import { myAppConfig } from "../src/runtime/app.config";
+// import { myAppConfig } from "../src/runtime/app.config";
 
 export default defineNuxtConfig({
-  modules: ["../src/module"],
+  modules: ["../src/module.ts", "@nuxt/ui"],
   css: ["../src/runtime/assets/css/main.css"],
   devtools: { enabled: true },
-  appConfig: myAppConfig,
   colorMode: {
     preference: "light",
   },
   ui: {
     theme: {
-      colors: ["tahiti"],
+      colors: ['black', 'white', 'secondary', 'error'],
     },
   },
 });
