@@ -2,6 +2,14 @@
 @import "@nuxt/ui";
 
 :root {
-  --ui-color-error-500: #ff2a2a;
-  --ui-text-inverted: #dadada;
+  --error: #ff2a2a;
+  --ui-text-inverted: #000000;
+  --ui-color-tahiti-500: #3ab7bf;
+  --ui-tahiti: #3ab7bf;
+}
+
+@theme default {
+  --color-midnight: #121063;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
 }
