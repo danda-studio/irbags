@@ -1,10 +1,5 @@
 <template>
   <IBGApp>
-    <IBGButton class="" />
-    {{ colorMode.preference }}
+    <IBGButton />
   </IBGApp>
 </template>
-
-<script setup>
-const colorMode = useColorMode()
-</script>
