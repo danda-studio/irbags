@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Docker username length
-        shell: pwsh
+        shell: powershell
         run: |
             if (-not $env:DOCKER_USERNAME) {
                 Write-Error "DOCKER_USERNAME is empty!"
