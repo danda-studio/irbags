@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Irbags.Core\Irbags.Core.csproj" />
     <ProjectReference Include="..\Irbags.Application\Irbags.Application.csproj" />
+    <ProjectReference Include="..\Irbags.Core\Irbags.Core.csproj" />
   </ItemGroup>
 
 </Project>
