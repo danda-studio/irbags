@@ -20,5 +20,19 @@ export default defineAppConfig({
         variant: "link",
       },
     },
+    input: {
+      compoundVariants: [
+        {
+          color: "black",
+          variant: "none",
+          class:
+            "placeholder:text-secondary text-xl text-black leading-none font-medium p-0 rounded-none",
+        },
+      ],
+      defaultVariants: {
+        color: "black",
+        variant: "none",
+      },
+    },
   },
 });
