@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend
-          file: Dockerfile
+          file: Irbags_Api/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
