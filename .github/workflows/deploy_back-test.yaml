@@ -10,15 +10,11 @@ on:
 
 jobs:
   build-and-deploy:
-    # Меняем runner на self-hosted
     runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: Check Docker username length
         run: |
@@ -35,7 +31,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./backend/Irbags_Api
@@ -45,9 +41,9 @@ jobs:
 
       - name: Deploy locally
         run: |
-          set -e
           cd ./backend/Irbags_Api
           docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
           docker compose down || true
           docker compose up -d --no-build
           docker ps --filter "name=api"
+
