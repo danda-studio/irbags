@@ -16,15 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check Docker username length
-        shell: powershell
+      - name: Check Docker username
         run: |
-            if (-not $env:DOCKER_USERNAME) {
-                Write-Error "DOCKER_USERNAME is empty!"
-                exit 1
-            } else {
-                Write-Host "DOCKER_USERNAME is set."
-            }
+            echo "Checking secrets..."
+            if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
+            echo "DOCKER_USERNAME is empty!"
+            exit 1
+            fi
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with: 
