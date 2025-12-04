@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login in Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -29,10 +29,9 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
 
       - name: Deploy on staging server
+        shell: powershell
         run: |
           Set-Location ./backend/Irbags_Api
           docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
-          docker compose down
-          docker compose up -d --no-deps api
-          docker ps --filter "name=api"
-        shell: powershell
+          docker compose up -d --force-recreate api
+          docker compose ps
