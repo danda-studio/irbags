@@ -28,10 +28,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
 
-      - name: Deploy on staging-serv
+      - name: Deploy on staging server
         run: |
-          cd ./backend/Irbags_Api
+          Set-Location ./backend/Irbags_Api
           docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
-          docker compose down || true
+          docker compose down
           docker compose up -d --no-deps api
           docker ps --filter "name=api"
+        shell: powershell
