@@ -38,7 +38,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
-
+           
       - name: Deploy locally
         run: |
           cd ./backend/Irbags_Api
