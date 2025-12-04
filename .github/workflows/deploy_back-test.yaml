@@ -1,0 +1,37 @@
+name: CI/CD Docker Staging (Backend)
+
+on:
+  push:
+    branches: [ develop ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy_back-test.yaml"
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/Irbags_Api
+          file: ./backend/Irbags_Api/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
+
+      - name: Deploy on staging server
+        shell: powershell
+        run: |
+          Set-Location ./backend/Irbags_Api
+          docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
+          docker compose up -d --force-recreate api
+          docker compose ps
