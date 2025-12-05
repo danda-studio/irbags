@@ -8,8 +8,9 @@ export default defineNuxtConfig({
     preference: "light",
   },
   ui: {
+    prefix: "IBG",
     theme: {
-      colors: ['black', 'white', 'secondary', 'error'],
+      colors: ["black", "white", "secondary", "error"],
     },
   },
 });

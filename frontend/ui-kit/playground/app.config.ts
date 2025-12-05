@@ -21,17 +21,51 @@ export default defineAppConfig({
       },
     },
     input: {
+      slots: {
+        base: [
+          "placeholder:text-secondary !text-xl !font-medium !p-0 rounded-none leading-none",
+        ],
+      },
       compoundVariants: [
         {
           color: "black",
           variant: "none",
-          class:
-            "placeholder:text-secondary text-xl text-black leading-none font-medium p-0 rounded-none",
+          class: "text-black",
+        },
+        {
+          color: "error",
+          variant: "none",
+          class: "text-error",
         },
       ],
       defaultVariants: {
         color: "black",
         variant: "none",
+      },
+    },
+    radioGroup: {
+      slots: {
+        base: "bg-secondary-500 ring-0 cursor-pointer",
+        item: `flex items-center [&:has(button:[aria-checked="true"])_label]:text-error`,
+        label: "text-black font-medium text-4xl cursor-pointer",
+        indicator: "after:bg-transparent cursor-pointer",
+      },
+      variants: {
+        indicator: {
+          start: {
+            wrapper: "ml-2.5",
+          },
+        },
+        size: {
+          xl: {
+            base: "size-big",
+          },
+        },
+      },
+      defaultVariants: {
+        color: "black",
+        variant: "list",
+        size: "xl",
       },
     },
   },
