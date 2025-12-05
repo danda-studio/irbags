@@ -46,8 +46,8 @@ export default defineAppConfig({
     radioGroup: {
       slots: {
         base: "bg-secondary-500 ring-0 cursor-pointer",
-        item: `flex items-center [&:has(button:[aria-checked="true"])_label]:text-error`,
-        label: "text-black font-medium text-4xl cursor-pointer",
+        item: `flex items-center text-black not-has-[button[aria-checked="true"]]:text-error`,
+        label: "text-inherit font-medium text-4xl cursor-pointer",
         indicator: "after:bg-transparent cursor-pointer",
       },
       variants: {
