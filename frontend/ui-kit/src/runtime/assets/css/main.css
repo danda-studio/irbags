@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --color-secondary-500: #dadada;
+  --color-black-500: #000;
+  --color-white-500: #fff;
+  --color-error-500: #ff2a2a;
+  --text-4xl: 2.1875rem;
+  --size-big: 1.5625rem;
+}
