@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { FileInput } from "../src/runtime/components";
+import { IBGFileInput } from "../src/runtime/components";
 
 const text = ref();
 
@@ -13,7 +13,16 @@ const value = ref("System");
       <IBGButton>Test</IBGButton>
       <IBGInput v-model="text" placeholder="Test" />
       <IBGRadioGroup v-model="value" :items="items" />
-      <FileInput :ui="{ base: 'bg-[#D7D7D7] text-[#D7D7D7]' }" />
+      <IBGFileInput :ui="{ base: 'bg-[#D7D7D7] text-[#D7D7D7]' }" />
+      <IBGCard variant="outline" class="mt-5">
+        <template #default>
+          <div class="bg-secondary-500 w-120 h-170.75" />
+        </template>
+        <template #footer>
+          <div>Сумка Kelly</div>
+          <div>69 €</div>
+        </template>
+      </IBGCard>
     </div>
   </IBGApp>
 </template>

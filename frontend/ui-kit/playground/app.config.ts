@@ -89,5 +89,17 @@ export default defineAppConfig({
         },
       ],
     },
+    card: {
+      slots: {
+        root: "rounded-none",
+        body: "p-0 sm:p-0",
+        footer: "p-0 sm:px-0 !pl-5 !pt-5 text-xl text-black font-medium",
+      },
+      variants: {
+        variant: {
+          outline: "ring-0",
+        },
+      },
+    },
   },
 });
