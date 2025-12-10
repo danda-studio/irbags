@@ -1,5 +1,4 @@
-﻿
-namespace Irbags.Application.Models.Request
+﻿namespace Irbags.Application.Auth.Models.Request
 {
     public class LoginRequest
     {

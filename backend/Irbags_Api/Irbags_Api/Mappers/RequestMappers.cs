@@ -1,18 +1,18 @@
+using Irbags.Application.Auth.Models.Request;
 using Irbags_Api.AuthController.Models.Request;
-using AppReq = Irbags.Application.Models.Request.LoginRequest;
 
 namespace Irbags_Api.Mappers
 {
     public static class RequestMappers
     {
-        public static AppReq ToApplicationLoginRequest(this LoginRequest src)
-        {
-            if (src is null) return null!;
-            return new AppReq
-            {
-                Login = src.Login,
-                Password = src.Password
-            };
-        }
+        public static Irbags.Application.Auth.Models.Request.LoginRequest ToApplicationLoginRequest(this AuthController.Models.Request.LoginRequest request)
+            => new() { Login = request.Login, Password = request.Password };
+
+        public static Irbags.Application.Product.Models.Request.CreateTagRequest ToApplicationCreateTagRequest(this ProductController.Models.Request.CreateTagRequest request)
+            => new() { Name = request.Name};
+
+        public static Irbags.Application.Product.Models.Request.UpdateTagRequest ToApplicationUpdateTagRequest(this ProductController.Models.Request.UpdateTagRequest request, Guid Id)
+            => new() { Id = Id, Name = request.Name };
+
     }
 }

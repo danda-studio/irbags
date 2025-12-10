@@ -1,5 +1,5 @@
-using Irbags.Application;
-using Irbags.Application.Models.Response;
+using Irbags.Application.Auth;
+using Irbags.Application.Auth.Models.Response;
 using Irbags.Application.Store;
 using Irbags.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,10 +95,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost3000");
-
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("AllowLocalhost3000");
     app.UseSwagger();
     app.MapScalarApiReference(options =>
     {
@@ -114,6 +113,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    app.UseCors("AllowSpecificOrigin");
     app.MapGet("/", () => "Irbags API is running");
 }
 

@@ -1,10 +1,10 @@
-﻿using Irbags.Application.Models.Response;
+﻿using Irbags.Application.Auth.Models.Response;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Irbags.Application
+namespace Irbags.Application.Auth
 {
     public class JwtTokenService : IJwtTokenService
     {

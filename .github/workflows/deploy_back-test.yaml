@@ -2,7 +2,8 @@ name: CI/CD Docker Staging (Backend)
 
 on:
   push:
-    branches: [ develop ]
+    branches: 
+      - develop 
     paths:
       - "backend/**"
       - ".github/workflows/deploy_back-test.yaml"
