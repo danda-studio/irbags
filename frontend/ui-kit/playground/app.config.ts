@@ -69,5 +69,25 @@ export default defineAppConfig({
         size: "xl",
       },
     },
+    fileUpload: {
+      slots: {
+        root: "cursor-pointer",
+        base: "border-none rounded-none",
+        avatar: "bg-transparent text-6xl",
+        fileLeadingAvatar: "bg-secondary-500 text-6xl",
+      },
+      variants: {
+        dropzone: {
+          true: "border-none",
+        },
+      },
+      compoundVariants: [
+        {
+          interactive: true,
+          disabled: false,
+          class: "hover:bg-current hover:bg-current/70",
+        },
+      ],
+    },
   },
 });

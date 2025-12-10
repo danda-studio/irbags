@@ -13,4 +13,12 @@ export default defineNuxtConfig({
       colors: ["black", "white", "secondary", "error"],
     },
   },
+  icon: {
+    customCollections: [
+      {
+        prefix: "custom",
+        dir: "../src/runtime/assets/icons",
+      },
+    ],
+  },
 });
