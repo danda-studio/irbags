@@ -14,7 +14,7 @@ const value = ref("System");
       <IBGInput v-model="text" placeholder="Test" />
       <IBGRadioGroup v-model="value" :items="items" />
       <IBGFileInput :ui="{ base: 'bg-[#D7D7D7] text-[#D7D7D7]' }" />
-      <IBGCard variant="outline" class="mt-5">
+      <IBGCard class="mt-5">
         <template #default>
           <div class="bg-secondary-500 w-120 h-170.75" />
         </template>
