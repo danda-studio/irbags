@@ -80,6 +80,11 @@ export default defineAppConfig({
         dropzone: {
           true: "border-none",
         },
+        layout: {
+          grid: {
+            fileLeadingAvatar: "rounded-none",
+          },
+        },
       },
       compoundVariants: [
         {
