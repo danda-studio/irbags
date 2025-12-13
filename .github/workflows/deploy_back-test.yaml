@@ -32,18 +32,19 @@ jobs:
       - name: Deploy on staging server
         shell: powershell
         run: |
-          Set-Location ./backend/Irbags_Api
+            Set-Location ./backend/Irbags_Api
 
-            # Экспортируем переменные окружения до docker compose
+            # Экспортируем переменные окружения
             $env:DB_USER_STAGING = "${{ secrets.DB_USER_STAGING }}"
             $env:DB_PASS_STAGING = "${{ secrets.DB_PASS_STAGING }}"
             $env:DB_NAME_STAGING = "${{ secrets.DB_NAME_STAGING }}"
             $env:DB_HOST_STAGING = "${{ secrets.DB_HOST_STAGING }}"
             $env:DB_PORT_STAGING = "${{ secrets.DB_PORT_STAGING }}"
 
-            # Подтягиваем новый образ
             docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
 
-            # Перезапускаем контейнер с новым образом и актуальными env
-            docker compose up -d --force-recreate --no-build api
+            # Полностью удаляем старый контейнер API и создаём новый
+            docker compose rm -fs api
+            docker compose up -d --no-build api
+
             docker compose ps
