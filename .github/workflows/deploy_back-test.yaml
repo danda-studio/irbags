@@ -35,4 +35,12 @@ jobs:
           Set-Location ./backend/Irbags_Api
           docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
           docker compose up -d --force-recreate api
+          
+          # Экспорт переменных окружения
+          $env:DB_USER_STAGING = "${{ secrets.DB_USER_STAGING }}"
+          $env:DB_PASS_STAGING = "${{ secrets.DB_PASS_STAGING }}"
+          $env:DB_NAME_STAGING = "${{ secrets.DB_NAME_STAGING }}"
+          $env:DB_HOST_STAGING = "${{ secrets.DB_HOST_STAGING }}"
+          $env:DB_PORT_STAGING = "${{ secrets.DB_PORT_STAGING }}"
+          
           docker compose ps
