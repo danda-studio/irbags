@@ -4,9 +4,9 @@
         image: postgres:15
         restart: unless-stopped
         environment:
-          POSTGRES_USER: ${{ secrets.DB_USER_STAGING }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASS_STAGING }}
-          POSTGRES_DB: ${{ secrets.DB_NAME_STAGING }}
+          POSTGRES_USER: ${DB_USER_STAGING}
+          POSTGRES_PASSWORD: ${DB_PASS_STAGING}
+          POSTGRES_DB: ${DB_NAME_STAGING}
         ports:
           - "5433:5432"
         volumes:
@@ -22,11 +22,11 @@
         depends_on:
           - db
         environment:
-          Host: ${{ secrets.DB_HOST_STAGING }}
-          Port: ${{ secrets.DB_PORT_STAGING }}
-          Database: ${{ secrets.DB_NAME_STAGING }}
-          Username: ${{ secrets.DB_USER_STAGING }}
-          Password: ${{ secrets.DB_PASS_STAGING }}
+          Host: ${DB_HOST_STAGING}
+          Port: ${DB_PORT_STAGING}
+          Database: ${DB_NAME_STAGING}
+          Username: ${DB_USER_STAGING}
+          Password: ${DB_PASS_STAGING}
           ASPNETCORE_ENVIRONMENT: Development
         ports:
           - "5000:8080"
@@ -39,3 +39,4 @@
     networks:
       irbags_net:
         driver: bridge
+
