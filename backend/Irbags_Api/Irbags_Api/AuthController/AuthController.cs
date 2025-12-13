@@ -16,8 +16,6 @@ namespace Irbags_Api.AuthController
             _authService = userService;
         }
 
-        // Получение refresh-token 
-
         [HttpPost("refresh")]
         public async Task<IActionResult> GetRefreshToken()
         {
@@ -44,7 +42,6 @@ namespace Irbags_Api.AuthController
 
         }
 
-        // Авторизация пользователя
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest request)
         {
@@ -64,7 +61,6 @@ namespace Irbags_Api.AuthController
             });
         }
 
-        // Выход пользователя
         [HttpPost("logout")]
         public async Task<IActionResult> LogoutUser()
         {

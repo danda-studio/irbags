@@ -35,7 +35,8 @@ namespace Irbags.Application.Auth
             var userModel = new UserModel
             {
                 Id = user.Id,
-                Login = user.Login
+                Login = user.Login,
+                Role = user.Role.ToString(),
             };
 
             var accessToken = _jwtService.GenerateAccessToken(userModel);

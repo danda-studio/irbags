@@ -1,5 +1,6 @@
 using Irbags.Application.Auth;
 using Irbags.Application.Auth.Models.Response;
+using Irbags.Application.Product;
 using Irbags.Application.Store;
 using Irbags.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 using System.Text;
 
 
@@ -59,7 +61,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtOptions.Issuer,
             ValidAudience = jwtOptions.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
+            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes),
+            RoleClaimType = ClaimTypes.Role,
         };
     });
 
@@ -90,8 +93,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     b => b.MigrationsAssembly("Irbags.Infrastructure")));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 
 var app = builder.Build();
 
