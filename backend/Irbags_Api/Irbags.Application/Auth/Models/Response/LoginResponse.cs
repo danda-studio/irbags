@@ -1,6 +1,4 @@
-﻿
-
-namespace Irbags.Application.Models.Response
+﻿namespace Irbags.Application.Auth.Models.Response
 {
     public class LoginResponse
     {

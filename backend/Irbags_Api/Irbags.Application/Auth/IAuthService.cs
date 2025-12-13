@@ -1,7 +1,7 @@
-﻿using Irbags.Application.Models.Request;
-using Irbags.Application.Models.Response;
+﻿using Irbags.Application.Auth.Models.Request;
+using Irbags.Application.Auth.Models.Response;
 
-namespace Irbags.Application
+namespace Irbags.Application.Auth
 {
     public interface IAuthService
     {

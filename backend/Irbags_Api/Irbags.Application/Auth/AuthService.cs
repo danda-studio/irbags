@@ -1,8 +1,8 @@
-﻿using Irbags.Application.Models.Request;
-using Irbags.Application.Models.Response;
+﻿using Irbags.Application.Auth.Models.Request;
+using Irbags.Application.Auth.Models.Response;
 using Irbags.Application.Store;
 
-namespace Irbags.Application
+namespace Irbags.Application.Auth
 {
     public class AuthService : IAuthService
     {
@@ -35,7 +35,8 @@ namespace Irbags.Application
             var userModel = new UserModel
             {
                 Id = user.Id,
-                Login = user.Login
+                Login = user.Login,
+                Role = user.Role.ToString(),
             };
 
             var accessToken = _jwtService.GenerateAccessToken(userModel);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Irbags.Application.Models.Response
+namespace Irbags.Application.Auth.Models.Response
 {
     public class JwtSettings
     {

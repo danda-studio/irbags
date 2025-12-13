@@ -1,4 +1,4 @@
-﻿using Irbags.Application;
+﻿using Irbags.Application.Auth;
 using Irbags_Api.AuthController.Models.Request;
 using Irbags_Api.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +16,7 @@ namespace Irbags_Api.AuthController
             _authService = userService;
         }
 
-        // 1. Получение refresh-token 
-
-        [HttpGet("refresh")]
+        [HttpPost("refresh")]
         public async Task<IActionResult> GetRefreshToken()
         {
             var refreshToken = HttpContext.Request.Cookies["refreshToken"];
@@ -44,7 +42,6 @@ namespace Irbags_Api.AuthController
 
         }
 
-        // 2. Авторизация пользователя
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest request)
         {
@@ -64,7 +61,6 @@ namespace Irbags_Api.AuthController
             });
         }
 
-        // 3. Выход пользователя
         [HttpPost("logout")]
         public async Task<IActionResult> LogoutUser()
         {

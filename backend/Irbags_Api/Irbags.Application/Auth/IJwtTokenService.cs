@@ -1,6 +1,6 @@
-﻿using Irbags.Application.Models.Response;
+﻿using Irbags.Application.Auth.Models.Response;
 
-namespace Irbags.Application
+namespace Irbags.Application.Auth
 {
     public interface IJwtTokenService
     {
