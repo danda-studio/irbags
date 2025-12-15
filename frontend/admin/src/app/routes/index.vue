@@ -1,0 +1,4 @@
+<template>
+  Index
+  <Widget />
+</template>
