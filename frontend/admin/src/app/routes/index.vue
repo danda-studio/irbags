@@ -1,4 +1,3 @@
 <template>
-  Index
-  <Widget />
+  <div>Index</div>
 </template>
