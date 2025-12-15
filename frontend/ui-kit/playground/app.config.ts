@@ -72,7 +72,7 @@ export default defineAppConfig({
     fileUpload: {
       slots: {
         root: "cursor-pointer",
-        base: "border-none rounded-none",
+        base: "border-none rounded-none bg-gray-500",
         avatar: "bg-transparent text-6xl",
         fileLeadingAvatar: "bg-secondary-500 text-6xl",
       },
@@ -90,7 +90,7 @@ export default defineAppConfig({
         {
           interactive: true,
           disabled: false,
-          class: "hover:bg-current hover:bg-current/70",
+          class: "hover:!bg-gray-500 hover:opacity-70",
         },
       ],
     },

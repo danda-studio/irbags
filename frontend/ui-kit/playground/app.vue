@@ -20,7 +20,7 @@ const value = ref("System");
       >
         <template #files-top="{ removeFile }">
           <p
-            class="text-black z-10 font-medium absolute top-5 left-5"
+            class="text-black z-10 opacity-20 font-medium absolute top-5 left-5"
             @click="removeFile()"
           >
             заменить
