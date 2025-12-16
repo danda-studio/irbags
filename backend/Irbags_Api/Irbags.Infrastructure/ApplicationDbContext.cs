@@ -14,16 +14,13 @@ namespace Irbags.Infrastructure
         {
         }
 
-        // Таблицы (агрегатные корни и явные join-таблицы)
         public DbSet<User> Users { get; set; }
         public DbSet<Token> Tokens { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductTag> Tags { get; set; }
         public DbSet<ProductColor> Colors { get; set; }
-        public DbSet<ProductSize> Sizes { get; set; }
-        public DbSet<ProductColorSize> ProductColorSizes { get; set; }
-        public DbSet<ProductCard> ProductCards { get; set; }
-        public DbSet<ProductBanner> ProductBanners { get; set; }
+        public DbSet<BannerBlock> ProductCards { get; set; }
+        public DbSet<ProductBlock> ProductBanners { get; set; }
         public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,23 +50,50 @@ namespace Irbags.Infrastructure
                 .HasForeignKey(p => p.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ProductColorSize>()
-                .HasOne(pcs => pcs.Product)
-                .WithMany(p => p.ProductColorSizes)
-                .HasForeignKey(pcs => pcs.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Many-to-many: Product/ProductColor 
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Colors)
+                .WithMany(c => c.Products)
+                .UsingEntity<Dictionary<string, object>>(
+                    "product_color_size",
+                    right => right
+                        .HasOne<ProductColor>()
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Restrict),
+                    left => left
+                        .HasOne<Product>()
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    join =>
+                    {
+                        join.HasKey("ProductId", "ColorId");
+                        join.ToTable("product_color_size");
+                        join.Property<Guid>("ProductId");
+                        join.Property<Guid>("ColorId");
+                    });
 
-            modelBuilder.Entity<ProductColorSize>()
-                .HasOne(pcs => pcs.Color)
-                .WithMany(c => c.ProductColorSizes)
-                .HasForeignKey(pcs => pcs.ColorId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // One-to-One: ProductImage/BannerBlock 
+            modelBuilder.Entity<ProductImage>(pi =>
+            {
+                pi.HasKey(x => x.Id);
+                pi.HasOne(x => x.Product)
+                  .WithMany(p => p.Images)
+                  .HasForeignKey("ProductId") // nullable FK generated if no property
+                  .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity<ProductColorSize>()
-                .HasOne(pcs => pcs.Size)
-                .WithMany(s => s.ProductColorSizes)
-                .HasForeignKey(pcs => pcs.SizeId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<BannerBlock>(bb =>
+            {
+                bb.HasKey(b => b.Id);
+
+                // One-to-One: BannerBlock.ImageId -> ProductImage.Id 
+                bb.HasOne(b => b.Image)
+                  .WithOne(i => i.BannerBlock)
+                  .HasForeignKey<BannerBlock>(b => b.ImageId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.ShortDescription)
@@ -78,10 +102,6 @@ namespace Irbags.Infrastructure
             modelBuilder.Entity<Product>()
                 .Property(p => p.Description)
                 .HasMaxLength(255);
-
-            modelBuilder.Entity<ProductSize>()
-                .Property(s => s.Size)
-                .HasMaxLength(10);
 
             modelBuilder.Entity<ProductTag>()
                 .Property(t => t.Name)
@@ -122,7 +142,8 @@ namespace Irbags.Infrastructure
             });
 
             // Индексы/уникальности при необходимости:
-            // modelBuilder.Entity<ProductColorSize>().HasIndex(pcs => new { pcs.ProductId, pcs.ColorId, pcs.SizeId }).IsUnique();
+            // modelBuilder.Entity<Dictionary<string, object>>("product_color_size")
+            //     .HasIndex("ProductId", "ColorId").IsUnique();
         }
     }
 }

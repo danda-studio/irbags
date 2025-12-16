@@ -5,6 +5,6 @@ namespace Irbags.Core.Product
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<ProductColorSize> ProductColorSizes { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
