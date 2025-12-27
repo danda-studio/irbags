@@ -11,7 +11,7 @@ const value = ref("System");
       <IBGButton>Test</IBGButton>
       <IBGInput v-model="text" placeholder="Test" />
       <IBGRadioGroup v-model="value" :items="items" />
-      <IBGFileUpload
+      <!-- <IBGFileUpload
         :file-delete="false"
         accept="image/*"
         icon="i-custom-img-logo"
@@ -24,7 +24,8 @@ const value = ref("System");
             заменить
           </p>
         </template>
-      </IBGFileUpload>
+      </IBGFileUpload> -->
+      <IBGFileInput />
 
       <IBGCard class="mt-5">
         <template #default>

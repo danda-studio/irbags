@@ -4,12 +4,11 @@ import {
   addComponent,
   addTemplate,
   installModules,
-  addPluginTemplate,
 } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
 import { join } from "path";
-import { myAppConfig } from "./runtime/app.config";
-import defu from "defu";
+import { myAppConfig } from "./app.config";
+// import { myAppConfig } from "./runtime/app.config";
 
 export interface ModuleOptions {
   prefix?: string;
@@ -38,6 +37,12 @@ export default defineNuxtModule<ModuleOptions>({
       _nuxt.options.css.push(cssPath);
     }
 
+    // _nuxt.options.appConfig.ui = myAppConfig.ui
+    // _nuxt.options.appConfig = defineAppConfig({
+
+    // })
+
+    // _nuxt.options.appConfig = myAppConfig
     // _nuxt.options.appConfig = {
     //   ..._nuxt.options.appConfig,
     //   ui: { ...myAppConfig.ui },
@@ -53,8 +58,8 @@ export default defineNuxtModule<ModuleOptions>({
       ...(_nuxt.options.icon || {}),
       customCollections: [
         {
-          prefix: "custom",
-          dir: "../src/runtime/assets/icons",
+          prefix: "ibg",
+          dir: resolver.resolve("./runtime/assets/icons"),
         },
       ],
     };
@@ -75,11 +80,16 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
+    _nuxt.options.appConfig = {
+      ..._nuxt.options.appConfig,
+      ui: { ...myAppConfig.ui, ..._nuxt.options.appConfig.ui },
+    };
+
     // Регистрируем app.config
-    addTemplate({
-      filename: "app.config.ts",
-      src: resolver.resolve("./runtime/app.config.ts"),
-    });
+    // addTemplate({
+    //   filename: "app.config.ts",
+    //   src: resolver.resolve("./runtime/app.config.ts"),
+    // });
 
     if (!existsSync(componentsDir)) return;
 
