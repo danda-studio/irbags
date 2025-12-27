@@ -2,11 +2,14 @@ import {
   defineNuxtModule,
   createResolver,
   addComponent,
-  installModules,
   addTemplate,
+  installModules,
+  addPluginTemplate,
 } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
 import { join } from "path";
+import { myAppConfig } from "./runtime/app.config";
+import defu from "defu";
 
 export interface ModuleOptions {
   prefix?: string;
@@ -25,48 +28,78 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(_options, _nuxt) {
-    // 1. Создаем Map модулей
-    // const modulesToInstall = new Map([
-    //   ["@nuxt/ui", {}], // второй аргумент — это опции модуля
-    // ]);
-
-    // 2. Set для уже установленных модулей
-    // const installed = new Set([]);
-
-    // 3. Ставим модуль пакетом
-    // await installModules(modulesToInstall, installed, _nuxt);
-
     const resolver = createResolver(import.meta.url);
     const componentsDir = resolver.resolve("./runtime/components");
 
     const cssPath = resolver.resolve("./runtime/assets/css/main.css");
-    _nuxt.options.css.push(cssPath);
 
+    // Подключаем CSS (однократно)
+    if (!_nuxt.options.css.includes(cssPath)) {
+      _nuxt.options.css.push(cssPath);
+    }
+
+    // _nuxt.options.appConfig = {
+    //   ..._nuxt.options.appConfig,
+    //   ui: { ...myAppConfig.ui },
+    // };
+
+    // Инициализируем объекты, не перезаписывая их полностью
+    _nuxt.options.colorMode = {
+      ...(_nuxt.options.colorMode || {}),
+      preference: "light", // устанавливаем светлую тему
+    };
+
+    _nuxt.options.icon = {
+      ...(_nuxt.options.icon || {}),
+      customCollections: [
+        {
+          prefix: "custom",
+          dir: "../src/runtime/assets/icons",
+        },
+      ],
+    };
+
+    _nuxt.options.ui = {
+      prefix: "IBG",
+      theme: {
+        colors: ["black", "white", "secondary", "error"],
+      },
+    };
+
+    // 1. Создаем Map модулей
+    const modulesToInstall = new Map([["@nuxt/ui", {}]]);
+
+    // 2. Set для уже установленных модулей
+    const installed = new Set([]);
+
+    // 3. Ставим модуль пакетом
+    await installModules(modulesToInstall, installed, _nuxt);
+
+    // Регистрируем app.config
     addTemplate({
       filename: "app.config.ts",
       src: resolver.resolve("./runtime/app.config.ts"),
     });
 
-    // Получаем элементы первого уровня
+    if (!existsSync(componentsDir)) return;
+
     const entries = readdirSync(componentsDir);
 
-    entries.forEach((entry) => {
+    for (const entry of entries) {
       const dirPath = join(componentsDir, entry);
 
-      // Берем только папки
-      if (!statSync(dirPath).isDirectory()) return;
+      if (!statSync(dirPath).isDirectory()) continue;
 
-      // Ищем .vue файл с таким же именем, как папка
       const componentFile = join(dirPath, `${entry}.vue`);
+      if (!existsSync(componentFile)) continue;
 
-      if (!existsSync(componentFile)) return;
-
-      const componentName = _options.prefix + entry;
+      const name = `${_options.prefix ?? ""}${entry}`;
 
       addComponent({
-        name: componentName,
+        name,
         filePath: componentFile,
+        export: "default",
       });
-    });
+    }
   },
 });

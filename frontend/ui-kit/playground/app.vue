@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { IBGFileInput } from "../src/runtime/components";
-
 const text = ref();
 
 const items = ref(["System", "Light", "Dark"]);
