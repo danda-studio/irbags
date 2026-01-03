@@ -14,5 +14,11 @@ namespace Irbags_Api.Mappers
         public static Irbags.Application.Product.Models.Request.UpdateTagRequest ToApplicationUpdateTagRequest(this ProductController.Models.Request.UpdateTagRequest request, Guid Id)
             => new() { Id = Id, Name = request.Name };
 
+        public static Irbags.Application.Photo.Models.Request.AddImageRequest ToApplicationAddImageRequest(this ImageController.Models.Request.AddImageRequest request)
+            => new() { ProductId =  request.ProductId, Key = request.Key, Image = request.Image};
+
+        public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, string key)
+            => new() { Image = request.Image, Key = key };
+
     }
 }

@@ -1,5 +1,6 @@
 using Irbags.Application.Auth;
 using Irbags.Application.Auth.Models.Response;
+using Irbags.Application.Photo;
 using Irbags.Application.Product;
 using Irbags.Application.Store;
 using Irbags.Infrastructure;
@@ -42,8 +43,8 @@ else
 }
 
 
-var jwtOptions = configuration.GetSection("Jwt")
-                              .Get<JwtSettings>() ?? new JwtSettings();
+var jwtOptions = configuration.GetSection("Jwt").Get<JwtSettings>() ?? new JwtSettings();
+builder.Services.Configure<PhotoSettings>(builder.Configuration.GetSection("PhotoSettings"));
 
 builder.Services.AddSingleton(jwtOptions);
 
@@ -93,7 +94,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     b => b.MigrationsAssembly("Irbags.Infrastructure")));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

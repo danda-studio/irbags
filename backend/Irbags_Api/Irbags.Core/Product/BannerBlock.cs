@@ -1,10 +1,11 @@
 ﻿
 namespace Irbags.Core.Product
 {
-    public class ProductCard
+    public class BannerBlock
     {
         public Guid Id { get; set; }
+        public Guid ImageId { get; set; }
         public string Key { get; set; }
-        public string Image { get; set; }
+        public ProductImage Image { get; set; }
     }
 }
