@@ -1,4 +1,4 @@
-export const myAppConfig = {
+export const ibgAppConfig = {
   ui: {
     colors: {
       black: "black",

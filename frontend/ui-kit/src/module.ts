@@ -2,13 +2,11 @@ import {
   defineNuxtModule,
   createResolver,
   addComponent,
-  addTemplate,
   installModules,
 } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
 import { join } from "path";
-import { myAppConfig } from "./app.config";
-// import { myAppConfig } from "./runtime/app.config";
+import { ibgAppConfig } from "./app.config";
 
 export interface ModuleOptions {
   prefix?: string;
@@ -36,17 +34,6 @@ export default defineNuxtModule<ModuleOptions>({
     if (!_nuxt.options.css.includes(cssPath)) {
       _nuxt.options.css.push(cssPath);
     }
-
-    // _nuxt.options.appConfig.ui = myAppConfig.ui
-    // _nuxt.options.appConfig = defineAppConfig({
-
-    // })
-
-    // _nuxt.options.appConfig = myAppConfig
-    // _nuxt.options.appConfig = {
-    //   ..._nuxt.options.appConfig,
-    //   ui: { ...myAppConfig.ui },
-    // };
 
     // Инициализируем объекты, не перезаписывая их полностью
     _nuxt.options.colorMode = {
@@ -80,16 +67,21 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
+    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = ibgAppConfig
+
+    // Кастомизируем компоненты
     _nuxt.options.appConfig = {
       ..._nuxt.options.appConfig,
-      ui: { ...myAppConfig.ui, ..._nuxt.options.appConfig.ui },
-    };
-
-    // Регистрируем app.config
-    // addTemplate({
-    //   filename: "app.config.ts",
-    //   src: resolver.resolve("./runtime/app.config.ts"),
-    // });
+      ui: {
+        ..._nuxt.options.appConfig.ui,
+        colors,
+        button,
+        card,
+        fileUpload,
+        input,
+        radioGroup
+      }
+    }
 
     if (!existsSync(componentsDir)) return;
 
