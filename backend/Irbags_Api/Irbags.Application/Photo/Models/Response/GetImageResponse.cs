@@ -1,9 +1,9 @@
 ﻿
 namespace Irbags.Application.Photo.Models.Response
 {
-    public class UpdateImageResponse
+    public class GetImageResponse
     {
         public Guid Id { get; set; }
-        public string Key { get; set; }
+        public string Name { get; set; }
     }
 }

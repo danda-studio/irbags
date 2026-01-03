@@ -15,10 +15,10 @@ namespace Irbags_Api.Mappers
             => new() { Id = Id, Name = request.Name };
 
         public static Irbags.Application.Photo.Models.Request.AddImageRequest ToApplicationAddImageRequest(this ImageController.Models.Request.AddImageRequest request)
-            => new() { };
+            => new() { ProductId =  request.ProductId, Key = request.Key, Image = request.Image};
 
-        public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, Guid Id)
-            => new() { };
+        public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, string key)
+            => new() { Image = request.Image, Key = key };
 
     }
 }

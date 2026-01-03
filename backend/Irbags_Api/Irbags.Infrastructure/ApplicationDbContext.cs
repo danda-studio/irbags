@@ -13,7 +13,6 @@ namespace Irbags.Infrastructure
             : base(options)
         {
         }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Token> Tokens { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -21,6 +20,7 @@ namespace Irbags.Infrastructure
         public DbSet<ProductColor> Colors { get; set; }
         public DbSet<BannerBlock> ProductCards { get; set; }
         public DbSet<ProductBlock> ProductBanners { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

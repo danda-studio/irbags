@@ -36,8 +36,8 @@ namespace Irbags.Application.Product
         public async Task<UpdateTagResponse> UpdateTag(UpdateTagRequest request)
         {
             var tag = await _productRepository.UpdateTag(request);
-
-            return tag;
+            
+            return tag ?? throw new KeyNotFoundException($"Tag not found");
         }
 
         public async Task<bool> DeleteTag(Guid Id)

@@ -1,7 +1,7 @@
 ﻿namespace Irbags_Api.ImageController.Models.Response
 {
-    public class GetImagesResponse
+    public class GetImageResponse
     {
-        public
+           
     }
 }

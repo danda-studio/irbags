@@ -58,9 +58,16 @@ namespace Irbags_Api.ProductController
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<UpdateTagResponse>> UpdateTag(Guid id, [FromBody] UpdateTagRequest request)
         {
-            var result = await _productService.UpdateTag(request.ToApplicationUpdateTagRequest(id));
+            try
+            {
+                var result = await _productService.UpdateTag(request.ToApplicationUpdateTagRequest(id));
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch
+            {
+                return NoContent();
+            }
         }
 
         [Authorize(Roles = "Admin")]

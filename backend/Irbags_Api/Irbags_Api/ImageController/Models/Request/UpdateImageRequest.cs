@@ -2,5 +2,6 @@
 {
     public class UpdateImageRequest
     {
+        public IFormFile Image { get; set; }
     }
 }

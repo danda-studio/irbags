@@ -18,16 +18,32 @@ namespace Irbags_Api.ImageController
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetImagesResponse>>> GetImages()
+        public async Task<ActionResult<IEnumerable<GetImageResponse>>> GetImages()
         {
             var result = await _photoService.GetImages();
 
             return Ok(result);
         }
 
+        [HttpGet("{key}")]
+        public async Task<ActionResult<GetImageResponse>> GetImage(string key)
+        {
+            try
+            {
+                var result = await _photoService.GetImage(key);
+
+                return Ok(result);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<AddImageResponse>> AddImage([FromBody] AddImageRequest request)
+        public async Task<ActionResult<AddImageResponse>> AddImage([FromForm] AddImageRequest request)
         {
             var result = await _photoService.AddImage(request.ToApplicationAddImageRequest());
 
@@ -35,23 +51,28 @@ namespace Irbags_Api.ImageController
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{id:guid}")]
-        public async Task<ActionResult<UpdateImageResponse>> UpdateImage(Guid id, [FromBody] UpdateImageRequest request)
+        [HttpPut("{key}")]
+        public async Task<ActionResult<UpdateImageResponse>> UpdateImage(string key, [FromBody] UpdateImageRequest request)
         {
-            var result = await _photoService.UpdateImage(request.ToApplicationUpdateImageRequest(id));
+            try
+            {
+                var result = await _photoService.UpdateImage(request.ToApplicationUpdateImageRequest(key));
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch
+            {
+                return NoContent();
+            }
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteImage(Guid id)
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> DeleteImage(string key)
         {
-            var result = await _photoService.DeleteImage(id);
+            var result = await _photoService.DeleteImage(key);
 
             return Ok(result);
         }
-
-
     }
 }
