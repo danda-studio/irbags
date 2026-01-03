@@ -3,7 +3,7 @@ name: Release IRBAGS UI Kit Alpha
 on:
   push:
     branches:
-      - develop
+      - feature/c3xFbH6m
 
 permissions:
   contents: write
