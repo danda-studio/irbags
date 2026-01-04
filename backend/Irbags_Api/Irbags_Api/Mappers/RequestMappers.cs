@@ -1,5 +1,3 @@
-using Irbags.Application.Auth.Models.Request;
-using Irbags_Api.AuthController.Models.Request;
 
 namespace Irbags_Api.Mappers
 {
@@ -19,6 +17,11 @@ namespace Irbags_Api.Mappers
 
         public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, string key)
             => new() { Image = request.Image, Key = key };
+
+        public static Irbags.Application.Product.Models.Request.CreateProductRequest ToApplicationCreateProductRequest(this ProductController.Models.Request.CreateProductRequest request)
+            => new() { };
+        public static Irbags.Application.Product.Models.Request.UpdateProductRequest ToApplicationUpdateProductRequest(this ProductController.Models.Request.UpdateProductRequest request)
+            => new() { };
 
     }
 }

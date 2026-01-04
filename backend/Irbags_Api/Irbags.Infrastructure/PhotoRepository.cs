@@ -1,6 +1,5 @@
 ﻿using Irbags.Application.Photo.Models.Request;
 using Irbags.Application.Photo.Models.Response;
-using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
 using Irbags.Core.Product;
 using Microsoft.EntityFrameworkCore;

@@ -10,86 +10,36 @@ namespace Irbags.Infrastructure
     public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _dbContext;
-
-        public ProductRepository(ApplicationDbContext dbContext) 
-        { 
-            _dbContext = dbContext; 
+        public ProductRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyCollection<GetTagResponse>> GetTags()
+        public async Task<IReadOnlyCollection<GetProductsResponse>> GetProducts()
         {
-            var tags = await _dbContext.Tags
-                .AsNoTracking()
-                .Select(t => new GetTagResponse
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                }).ToListAsync();
-            
-            return new ReadOnlyCollection<GetTagResponse>(tags);
+
+            return new List<GetProductsResponse>();
         }
 
-        public async Task<GetTagResponse?> GetTag(Guid Id)
+        public async Task<GetProductResponse?> GetProduct(Guid Id)
         {
-            var tag = await _dbContext.Tags
-                .Where(t => t.Id == Id)
-                .Select(t => new GetTagResponse
-                {
-                    Id = t.Id,
-                    Name = t.Name
-                })
-                .FirstOrDefaultAsync();
 
-            return tag;
+            return new GetProductResponse();
         }
 
-        public async Task<CreateTagResponse> CreateTag(CreateTagRequest request)
+        public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
-            var tag = new ProductTag
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name
-            };
-
-            _dbContext.Tags.Add(tag);
-            await _dbContext.SaveChangesAsync();
-
-            return new CreateTagResponse
-            {
-                Id = tag.Id,
-                Name = tag.Name
-            };
+            return new CreateProductResponse();
         }
 
-        public async Task<UpdateTagResponse?> UpdateTag(UpdateTagRequest request)
+        public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)
         {
-            var tag = await _dbContext.Tags
-                .FirstOrDefaultAsync(t => t.Id == request.Id);
-
-            if (tag == null)
-                return null;
-
-            tag.Name = request.Name;
-            await _dbContext.SaveChangesAsync();
-
-            return new UpdateTagResponse
-            {
-                Id = tag.Id,
-                Name = tag.Name
-            };
+            return new UpdateProductResponse();
         }
 
-        public async Task<bool> DeleteTag(Guid Id)
+        public async Task<bool> DeleteProduct(Guid Id)
         {
-            var tag = _dbContext.Tags
-                .FirstOrDefault(t => t.Id == Id);
 
-            if (tag == null) 
-              return false;
-
-            _dbContext.Tags.Remove(tag);
-            await _dbContext.SaveChangesAsync(); 
-            
             return true;
         }
     }

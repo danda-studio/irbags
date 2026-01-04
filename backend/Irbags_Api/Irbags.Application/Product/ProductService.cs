@@ -6,46 +6,45 @@ namespace Irbags.Application.Product
 {
     public class ProductService : IProductService
     {
-        private IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
         public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
 
-        public async Task<IReadOnlyCollection<GetTagResponse>> GetTags()
+        public async Task<IReadOnlyCollection<GetProductsResponse>> GetProducts()
         {
-            var tags = await _productRepository.GetTags();
+            var products = await _productRepository.GetProducts();
 
-            return tags;
+            return products;
         }
 
-        public async Task<GetTagResponse> GetTag(Guid Id)
+        public async Task<GetProductResponse> GetProduct(Guid Id)
         {
-            var tag = await _productRepository.GetTag(Id);
-            
-            return tag ?? throw new KeyNotFoundException($"Tag with id '{Id}' not found");
+            var product = await _productRepository.GetProduct(Id);
+
+            return product ?? throw new KeyNotFoundException($"Product with id '{Id}' not found");
         }
 
-        public async Task<CreateTagResponse> CreateTag(CreateTagRequest request)
+        public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
-            var tag = await _productRepository.CreateTag(request);
+            var product = await _productRepository.CreateProduct(request);
 
-            return tag;
+            return product;
         }
 
-        public async Task<UpdateTagResponse> UpdateTag(UpdateTagRequest request)
+        public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)
         {
-            var tag = await _productRepository.UpdateTag(request);
-            
-            return tag ?? throw new KeyNotFoundException($"Tag not found");
+            var product = await _productRepository.UpdateProduct(request);
+
+            return product ?? throw new KeyNotFoundException($"Product not found");
         }
 
-        public async Task<bool> DeleteTag(Guid Id)
+        public async Task<bool> DeleteProduct(Guid Id)
         {
-            var tag = await _productRepository.DeleteTag(Id);
+            var product = await _productRepository.DeleteProduct(Id);
 
-            return tag;
+            return product;
         }
-
     }
 }
