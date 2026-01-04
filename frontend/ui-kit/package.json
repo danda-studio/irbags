@@ -1,8 +1,11 @@
 {
   "name": "@irbags/ui-kit",
-  "version": "1.0.1-alpha.5",
+  "version": "1.0.1-alpha.6",
   "description": "IRBAGS UI Kit",
-  "repository": "danda-studio/irbags/tree/feature/c3xFbH6m/frontend/ui-kit",
+  "repository": {
+    "type": "git",
+    "url": "danda-studio/irbags/tree/feature/c3xFbH6m/frontend/ui-kit"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
