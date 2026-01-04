@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - feature/c3xFbH6m
+    paths:
+      - "frontend/ui-kit/**"
 
 permissions:
   contents: write
 
 jobs:
-  release-alpha:
+  release-irbags-ui_kit-alpha:
     runs-on: ubuntu-latest
     environment: develop/frontend/ui-kit
 
@@ -30,6 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+        working-directory: frontend/ui-kit
 
       - name: Configure Git
         run: |
@@ -38,11 +41,13 @@ jobs:
 
       - name: Prepare Nuxt project
         run: pnpm run dev:prepare
+        working-directory: frontend/ui-kit
 
       - name: Release alpha version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm run release:alpha
+        working-directory: frontend/ui-kit
 
       - name: Push version bump
         run: git push
