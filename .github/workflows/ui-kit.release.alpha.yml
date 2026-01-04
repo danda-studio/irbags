@@ -49,5 +49,8 @@ jobs:
         run: pnpm run release:alpha
         working-directory: frontend/ui-kit
 
+      - name: Commit new version bump
+        run: git commit -m "New Version"
+
       - name: Push version bump
         run: git push
