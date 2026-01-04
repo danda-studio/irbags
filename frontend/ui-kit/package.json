@@ -1,8 +1,8 @@
 {
   "name": "@irbags/ui-kit",
   "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "description": "IRBAGS UI Kit",
+  "repository": "danda-studio/irbags/tree/develop/frontend/ui-kit",
   "license": "MIT",
   "type": "module",
   "exports": {
