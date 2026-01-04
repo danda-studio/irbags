@@ -4,7 +4,7 @@ IRBAGS UI Kit module.
 
 ## Installing
 
-Выберите ваш пакетный менеджер:
+Select your package manager:
 
 ### pnpm
 
