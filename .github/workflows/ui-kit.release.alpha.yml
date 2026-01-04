@@ -3,7 +3,7 @@ name: Release IRBAGS UI Kit Alpha
 on:
   push:
     branches:
-      - feature/c3xFbH6m
+      - develop
     paths:
       - "frontend/ui-kit/**"
 
