@@ -6,7 +6,6 @@ import {
 } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
 import { join } from "path";
-import { ibgAppConfig } from "./runtime/app.config";
 
 export interface ModuleOptions {
   prefix?: string;
@@ -67,9 +66,8 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
-    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = ibgAppConfig
-
-    // Кастомизируем компоненты
+    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = (await import("./app.config")).ibgAppConfig
+    // Кастомизируем компонент
     _nuxt.options.appConfig = {
       ..._nuxt.options.appConfig,
       ui: {
