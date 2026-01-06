@@ -23,5 +23,7 @@ const value = ref("1");
         <div>69 €</div>
       </template>
     </IBGCard>
+
+    <FsdTest />
   </div>
 </template>

@@ -1,0 +1,3 @@
+<template>
+  FSD Test
+</template>
