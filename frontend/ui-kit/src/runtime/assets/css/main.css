@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
-@source "../../../app.config.ts";
+@source "../../app.config.ts";
 
 @theme static {
   --color-secondary-500: #dadada;

@@ -66,8 +66,9 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
-    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = (await import("./app.config")).ibgAppConfig
-    // Кастомизируем компонент
+    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = (await import(resolver.resolve('./runtime/app.config')) as typeof import('./runtime/app.config')).ibgAppConfig
+
+    // Кастомизируем компоненты
     _nuxt.options.appConfig = {
       ..._nuxt.options.appConfig,
       ui: {
