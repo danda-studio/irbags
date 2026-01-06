@@ -6,7 +6,7 @@ import {
 } from "@nuxt/kit";
 import { readdirSync, statSync, existsSync } from "fs";
 import { join } from "path";
-import { ibgAppConfig } from "./app.config";
+import { ibgAppConfig } from "./runtime/app.config";
 
 export interface ModuleOptions {
   prefix?: string;
