@@ -35,4 +35,12 @@ export default withNuxt(
       },
     },
   ),
+  {
+    files: ["nuxt.config.ts"],
+    languageOptions: {
+      globals: {
+        defineNuxtConfig: "readonly",
+      },
+    },
+  },
 );

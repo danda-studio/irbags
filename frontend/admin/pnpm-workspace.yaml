@@ -1,8 +1,8 @@
 shellEmulator: true
 
 trustPolicy: no-downgrade
-
 onlyBuiltDependencies:
   - "@parcel/watcher"
   - esbuild
   - unrs-resolver
+  - vue-demi
