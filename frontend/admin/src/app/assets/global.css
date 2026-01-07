@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@irbags/ui-kit";
 
+:root {
+  @apply lg:text-[calc((16/(1920/100))*1vw)] md:text-[calc((16/(1440/100))*1vw)] text-[calc((16/(375/100))*1vw)] h-full flex flex-col;
+}
+
 #__nuxt {
   @apply max-md:*:hidden max-md:h-screen max-md:flex max-md:items-center max-md:justify-center;
 }
