@@ -28,12 +28,12 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const componentsDir = resolver.resolve("./runtime/components");
 
-    const cssPath = resolver.resolve("./runtime/assets/css/main.css");
+    // const cssPath = resolver.resolve("./runtime/assets/css/main.css");
 
-    // Подключаем CSS (однократно)
-    if (!_nuxt.options.css.includes(cssPath)) {
-      _nuxt.options.css.push(cssPath);
-    }
+    // // Подключаем CSS (однократно)
+    // if (!_nuxt.options.css.includes(cssPath)) {
+    //   _nuxt.options.css.push(cssPath);
+    // }
 
     // Инициализируем объекты, не перезаписывая их полностью
     _nuxt.options.colorMode = {

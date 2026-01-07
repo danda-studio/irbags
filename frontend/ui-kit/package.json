@@ -12,7 +12,8 @@
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
-      "import": "./dist/module.mjs"
+      "import": "./dist/module.mjs",
+      "style": "./dist/runtime/assets/css/main.css"
     }
   },
   "main": "./dist/module.mjs",
