@@ -6,6 +6,24 @@ const value = ref("System");
 </script>
 
 <template>
+  <div class="text-4xl">
+    35px - text-4xl
+  </div>
+  <div class="text-3xl">
+    30px - text-3xl
+  </div>
+  <div class="text-2xl">
+    24px - text-2xl
+  </div>
+  <div class="text-base">
+    20px - text-base
+  </div>
+  <div class="text-sm">
+    16px - text-sm
+  </div>
+  <div class="text-xs">
+    15px - text-xs
+  </div>
   <IBGApp>
     <div class="flex flex-col w-max">
       <IBGButton>Test</IBGButton>
