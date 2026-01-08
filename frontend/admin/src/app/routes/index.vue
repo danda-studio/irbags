@@ -12,7 +12,7 @@ const value = ref("1");
     <IBGInput v-model="text" placeholder="Test" />
     <IBGRadioGroup v-model="value" :items="items" />
 
-    <IBGFileInput />
+    <IBGFileInput class="size-100" />
 
     <IBGCard class="mt-5">
       <template #default>
