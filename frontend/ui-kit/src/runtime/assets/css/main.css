@@ -1,6 +1,7 @@
 @import "@nuxt/ui";
 @source "../../../app.config.ts";
 @source "../../../module.mjs";
+@source "../../components/FileInput/FileInput.vue";
 
 @theme static {
   --color-secondary-500: #dadada;
