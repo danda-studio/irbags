@@ -12,7 +12,7 @@ export const ibgAppConfig = {
           color: "black",
           variant: "link",
           class:
-            "text-black hover:text-secondary disabled:text-secondary active:text-black cursor-pointer text-xl leading-none font-medium p-0 bg-transparent active:bg-transparent hover:bg-transparent",
+            "text-black hover:text-secondary disabled:text-secondary active:text-black cursor-pointer text-base leading-none font-medium p-0 bg-transparent active:bg-transparent hover:bg-transparent",
         },
       ],
       defaultVariants: {
@@ -23,7 +23,7 @@ export const ibgAppConfig = {
     input: {
       slots: {
         base: [
-          "placeholder:text-secondary !text-xl !font-medium !p-0 rounded-none leading-none",
+          "placeholder:text-secondary !text-base !font-medium !p-0 rounded-none leading-none",
         ],
       },
       compoundVariants: [
@@ -98,7 +98,7 @@ export const ibgAppConfig = {
       slots: {
         root: "rounded-none",
         body: "p-0 sm:p-0",
-        footer: "p-0 sm:px-0 !pl-5 !pt-5 text-xl text-black font-medium",
+        footer: "p-0 sm:px-0 !pl-5 !pt-5 text-base text-black font-medium",
       },
       variants: {
         variant: {

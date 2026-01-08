@@ -1,11 +1,11 @@
+import { existsSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 import {
-  defineNuxtModule,
-  createResolver,
   addComponent,
+  createResolver,
+  defineNuxtModule,
   installModules,
 } from "@nuxt/kit";
-import { readdirSync, statSync, existsSync } from "fs";
-import { join } from "path";
 import { ibgAppConfig } from "./app.config";
 
 export interface ModuleOptions {
@@ -67,7 +67,7 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
-    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = ibgAppConfig
+    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = ibgAppConfig;
 
     // Кастомизируем компоненты
     _nuxt.options.appConfig = {
@@ -79,21 +79,24 @@ export default defineNuxtModule<ModuleOptions>({
         card,
         fileUpload,
         input,
-        radioGroup
-      }
-    }
+        radioGroup,
+      },
+    };
 
-    if (!existsSync(componentsDir)) return;
+    if (!existsSync(componentsDir))
+      return;
 
     const entries = readdirSync(componentsDir);
 
     for (const entry of entries) {
       const dirPath = join(componentsDir, entry);
 
-      if (!statSync(dirPath).isDirectory()) continue;
+      if (!statSync(dirPath).isDirectory())
+        continue;
 
       const componentFile = join(dirPath, `${entry}.vue`);
-      if (!existsSync(componentFile)) continue;
+      if (!existsSync(componentFile))
+        continue;
 
       const name = `${_options.prefix ?? ""}${entry}`;
 
