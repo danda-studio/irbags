@@ -13,12 +13,13 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "@irbags/ui-kit": "1.0.1-alpha.19",
+    "@irbags/ui-kit": "1.0.1-alpha.23",
     "@nuxt/eslint": "1.12.1",
     "eslint": "^9.39.2",
     "nuxt": "3.18.1",
     "vue": "^3.5.25",
-    "vue-router": "^4.6.4"
+    "vue-router": "^4.6.4",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.3",

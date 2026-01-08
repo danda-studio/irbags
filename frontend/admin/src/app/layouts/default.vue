@@ -3,5 +3,7 @@
     header
   </header>
   <slot />
-  <footer>footer</footer>
+  <footer class="px-2">
+    footer
+  </footer>
 </template>
