@@ -59,7 +59,7 @@ export const ibgAppConfig = {
         },
         size: {
           xl: {
-            base: "size-big",
+            base: "size-6.25",
           },
         },
       },
