@@ -1,9 +1,4 @@
 <template>
-  <header>
-    header
-  </header>
+  <LayoutHeaderWidget />
   <slot />
-  <footer class="px-2">
-    footer
-  </footer>
 </template>
