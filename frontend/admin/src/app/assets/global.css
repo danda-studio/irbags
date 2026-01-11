@@ -6,12 +6,20 @@
 }
 
 :root {
-  @apply lg:text-[calc((16/(1920/100))*1vw)] md:text-[calc((16/(1440/100))*1vw)] text-[calc((16/(375/100))*1vw)] h-full flex flex-col;
+  @apply h-full flex flex-col;
+  @apply text-[calc((16/(375/100))*1vw)];
+  @apply md:text-[calc((16/(1440/100))*1vw)];
+  @apply lg:text-[calc((16/(1920/100))*1vw)];
+}
+
+::-webkit-scrollbar {
+  width: 0;
 }
 
 #__nuxt {
   @apply max-md:*:hidden max-md:h-screen max-md:flex max-md:items-center max-md:justify-center;
 }
+
 #__nuxt::after {
   @apply md:hidden content-['опа,_так_не_работает'] font-medium text-xl leading-none text-center;
 }
