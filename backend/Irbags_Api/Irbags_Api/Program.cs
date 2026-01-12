@@ -6,6 +6,8 @@ using Irbags.Application.Store;
 using Irbags.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Security.Claims;
@@ -43,7 +45,8 @@ else
 
 
 var jwtOptions = configuration.GetSection("Jwt").Get<JwtSettings>() ?? new JwtSettings();
-builder.Services.Configure<PhotoSettings>(builder.Configuration.GetSection("PhotoSettings"));
+builder.Services.Configure<PhotoSettings>(
+    builder.Configuration.GetSection("PhotoSettings"));
 
 builder.Services.AddSingleton(jwtOptions);
 
@@ -133,5 +136,20 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var photoSettings = app.Services
+    .GetRequiredService<IOptions<PhotoSettings>>()
+    .Value;
+
+if (string.IsNullOrWhiteSpace(photoSettings.UploadPath))
+{
+    throw new InvalidOperationException("PhotoSettings.UploadPath is not configured");
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(photoSettings.UploadPath),
+    RequestPath = "/uploads"
+});
 
 app.Run();

@@ -1,4 +1,6 @@
-﻿using Irbags.Application.Product.Models.Request;
+﻿using Irbags.Application.Photo;
+using Irbags.Application.Photo.Models.Request;
+using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
 
@@ -6,9 +8,12 @@ namespace Irbags.Application.Product
 {
     public class ProductService : IProductService
     {
+        private readonly IPhotoService _photoService;
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+       
+        public ProductService(IPhotoService photoService, IProductRepository productRepository)
         {
+            _photoService = photoService;
             _productRepository = productRepository;
         }
 
@@ -28,9 +33,18 @@ namespace Irbags.Application.Product
 
         public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
-            var product = await _productRepository.CreateProduct(request);
 
-            return product;
+            //var product = await _productRepository.CreateProduct(request);
+
+            //await _photoService.AddImage(new AddImageRequest
+            //{
+            //    ProductId = request.Id,
+            //    Key = request.Name,
+            //    Image = request.Images.Select(i => new FileUploadImageItem())
+            //});
+
+            //return product;
+            return new CreateProductResponse();
         }
 
         public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)

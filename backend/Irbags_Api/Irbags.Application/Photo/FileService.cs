@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Irbags.Application.Photo.Models.Request;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -19,23 +20,28 @@ namespace Irbags.Application.Photo
             }
         }
 
-        public async Task<string> SaveFile(IFormFile imageFile, string[] allowedFileExtensions, string fileNameWithExtension)
+        public async Task<string> SaveFile(FileUploadImageItem file, string[] allowedExtensions, string fileNameWithExtension)
         {
-            if (imageFile == null) throw new ArgumentNullException(nameof(imageFile));
-            if (string.IsNullOrWhiteSpace(fileNameWithExtension)) throw new ArgumentException("File name cannot be empty.");
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
 
-            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-            if (!allowedFileExtensions.Contains(extension))
-                throw new ArgumentException($"Only {string.Join(", ", allowedFileExtensions)} files are allowed.");
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(extension))
+                throw new ArgumentException("Invalid file extension");
 
-            var filePath = _settings.UploadPath.TrimEnd('/') + "/" + fileNameWithExtension;
+            var filePath = Path.Combine(_settings.UploadPath, fileNameWithExtension);
 
-            await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            await imageFile.CopyToAsync(stream);
-            await stream.FlushAsync();
+            await using var output = new FileStream(
+                filePath,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.None);
+
+            await file.Content.CopyToAsync(output);
 
             return fileNameWithExtension;
         }
+
 
         public void DeleteFile(string fileNameWithExtension)
         {

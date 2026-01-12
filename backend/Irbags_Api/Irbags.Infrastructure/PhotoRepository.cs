@@ -24,6 +24,7 @@ namespace Irbags.Infrastructure
                 {
                     Id = t.Id,
                     Name = t.Name,
+                    RelativeUrl = $"/uploads/{t.Name}{t.Extension}"
                 }).ToListAsync();
 
             return new ReadOnlyCollection<GetImageResponse>(images);
@@ -36,7 +37,8 @@ namespace Irbags.Infrastructure
                 .Select(t => new GetImageResponse
                 {
                     Id = t.Id,
-                    Name = t.Name
+                    Name = t.Name,
+                    RelativeUrl = $"/uploads/{t.Name}{t.Extension}",
                 })
                 .FirstOrDefaultAsync();
 
@@ -48,9 +50,9 @@ namespace Irbags.Infrastructure
             var imageEntity = new ProductImage
             {
                 Id = Guid.NewGuid(),
-                Name = request.Key 
+                Name = request.Key,
+                Extension = request.Image.Extension,
             };
-
 
             if (request.ProductId != null)
             {
@@ -72,8 +74,8 @@ namespace Irbags.Infrastructure
             return new AddImageResponse
             {
                 Id = imageEntity.Id,
-                FileName = imageEntity.Name,
-                Url = $"/Uploads/{imageEntity.Name}" 
+                Name = imageEntity.Name,
+                RelativeUrl = $"/uploads/{imageEntity.Name}{imageEntity.Extension}"
             };
         }
 
@@ -91,7 +93,8 @@ namespace Irbags.Infrastructure
             return new UpdateImageResponse
             {
                 Id = image.Id,
-                Key = image.Name
+                Name = image.Name,
+                RelativeUrl = $"/uploads/{image.Name}{image.Extension}"
             };
         }
 

@@ -1,7 +1,7 @@
 ﻿using Irbags.Application.Photo.Models.Request;
 using Irbags.Application.Photo.Models.Response;
 using Irbags.Application.Store;
-using Microsoft.AspNetCore.Http;
+using Irbags.Core.Product;
 
 namespace Irbags.Application.Photo
 {
@@ -26,16 +26,24 @@ namespace Irbags.Application.Photo
         public async Task<GetImageResponse> GetImage(string key)
         {
             var image = await _photoRepository.GetImage(key);
-            return image ?? throw new KeyNotFoundException($"Image with key '{key}' not found");
+            
+            if(image == null)
+            {
+                throw new KeyNotFoundException($"Image with key '{key}' not found");
+            }
+
+            return new GetImageResponse
+            {
+                Id = image.Id,
+                Name = image.Name,
+                RelativeUrl = image.RelativeUrl
+            };
         }
 
         public async Task<UpdateImageResponse> UpdateImage(UpdateImageRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
-
-            if (request.Image == null || request.Image.Length == 0)
-                throw new ArgumentException("Image file is required.");
 
             var extension = Path.GetExtension(request.Image.FileName).ToLowerInvariant();
             if (!_allowedExtensions.Contains(extension))
@@ -45,13 +53,23 @@ namespace Irbags.Application.Photo
 
             var savedFileName = await _fileService.SaveFile(request.Image, _allowedExtensions, $"{request.Key}{extension}");
 
-            var response = await _photoRepository.UpdateImage(new UpdateImageRequest
+            var image = await _photoRepository.UpdateImage(new UpdateImageRequest
             {
                 Image = request.Image,
                 Key = request.Key
             });
 
-            return response ?? throw new KeyNotFoundException($"Image not found");
+            if(image == null)
+            {
+                throw new KeyNotFoundException($"Image not found");
+            }
+
+            return new UpdateImageResponse
+            {
+                Id = image.Id,
+                Name = image.Name,
+                RelativeUrl = image.RelativeUrl
+            };
         }
 
         public async Task<AddImageResponse> AddImage(AddImageRequest request)
@@ -59,7 +77,7 @@ namespace Irbags.Application.Photo
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            if (request.Image == null || request.Image.Length == 0)
+            if (request.Image == null)
                 throw new ArgumentException("Image file is required.");
 
             var extension = Path.GetExtension(request.Image.FileName).ToLowerInvariant();

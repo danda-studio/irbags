@@ -4,6 +4,7 @@ using Irbags_Api.ImageController.Models.Response;
 using Irbags_Api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Irbags_Api.ImageController
 {
@@ -12,9 +13,11 @@ namespace Irbags_Api.ImageController
     public class ImageController : ControllerBase
     {
         private readonly IPhotoService _photoService;
-        public ImageController(IPhotoService photoService)
+        private readonly PhotoSettings _settings;
+        public ImageController(IPhotoService photoService, IOptions<PhotoSettings> settings)
         {
             _photoService = photoService;
+            _settings = settings.Value;
         }
 
         [HttpGet]
@@ -22,7 +25,15 @@ namespace Irbags_Api.ImageController
         {
             var result = await _photoService.GetImages();
 
-            return Ok(result);
+            var baseUrl = _settings.BaseUrl.TrimEnd('/');
+
+            var response = result.Select(image => new GetImageResponse
+            {
+                Name = image.Name,
+                ImageUrl = $"{baseUrl}{image.RelativeUrl}"
+            });
+
+            return Ok(response);
         }
 
         [HttpGet("{key}")]
@@ -32,7 +43,13 @@ namespace Irbags_Api.ImageController
             {
                 var result = await _photoService.GetImage(key);
 
-                return Ok(result);
+                var baseUrl = _settings.BaseUrl.TrimEnd('/');
+
+                return Ok(new GetImageResponse
+                {
+                    Name = result.Name,
+                    ImageUrl = $"{baseUrl}{result.RelativeUrl}"
+                });
             }
             catch
             {
@@ -47,7 +64,13 @@ namespace Irbags_Api.ImageController
         {
             var result = await _photoService.AddImage(request.ToApplicationAddImageRequest());
 
-            return Ok(result);
+            var baseUrl = _settings.BaseUrl.TrimEnd('/');
+
+            return Ok(new AddImageResponse 
+            {
+                Name = result.Name,
+                ImageUrl = $"{baseUrl}{result.RelativeUrl}"
+            });
         }
 
         [Authorize(Roles = "Admin")]
@@ -58,7 +81,13 @@ namespace Irbags_Api.ImageController
             {
                 var result = await _photoService.UpdateImage(request.ToApplicationUpdateImageRequest(key));
 
-                return Ok(result);
+                var baseUrl = _settings.BaseUrl.TrimEnd('/');
+
+                return Ok(new UpdateImageResponse
+                {
+                    Name = result.Name,
+                    ImageUrl = $"{baseUrl}{result.RelativeUrl}" 
+                });
             }
             catch
             {

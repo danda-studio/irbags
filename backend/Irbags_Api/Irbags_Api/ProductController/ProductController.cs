@@ -43,7 +43,7 @@ namespace Irbags_Api.ProductController
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<CreateProductResponse>> CreateProduct([FromBody] CreateProductRequest request)
+        public async Task<ActionResult<CreateProductResponse>> CreateProduct([FromForm] CreateProductRequest request)
         {
             var result = await _productService.CreateProduct(request.ToApplicationCreateProductRequest());
 
