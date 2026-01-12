@@ -1,5 +1,15 @@
 <script lang="ts" setup>
 const items = ["главная", "товары", "фильтры"];
+
+function onSelect(item: string) {
+  if (item === "товары") {
+    router.push('/products')
+  } else if (item === "главная") {
+    router.push('/') // если есть главная страница
+  } else if (item === "фильтры") {
+    router.push('/filters') // пример, если есть
+  }
+}
 </script>
 
 <template>
@@ -8,7 +18,8 @@ const items = ["главная", "товары", "фильтры"];
       <IBGInput class="w-full" placeholder="поиск" />
       <IBGRadioGroup
         :ui="{ container: 'hidden', wrapper: 'ml-0', fieldset: 'gap-5', label: 'text-base' }"
-        :items="items" orientation="horizontal"
+        :items="items"
+        orientation="horizontal"
       />
     </div>
     <div class="flex items-center justify-between w-full gap-159.5">
