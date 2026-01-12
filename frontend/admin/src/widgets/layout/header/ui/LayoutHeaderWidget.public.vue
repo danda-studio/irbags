@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-const items = ["главная", "товары", "фильтры"];
+import { useNavigation } from '~/shared/composables/useNavigation'
 
-function onSelect(item: string) {
-  if (item === "товары") {
-    router.push('/products')
-  } else if (item === "главная") {
-    router.push('/') // если есть главная страница
-  } else if (item === "фильтры") {
-    router.push('/filters') // пример, если есть
-  }
-}
+const { selected, navigationItems } = useNavigation();
+
 </script>
 
 <template>
@@ -18,8 +11,9 @@ function onSelect(item: string) {
       <IBGInput class="w-full" placeholder="поиск" />
       <IBGRadioGroup
         :ui="{ container: 'hidden', wrapper: 'ml-0', fieldset: 'gap-5', label: 'text-base' }"
-        :items="items"
+        :items="navigationItems"
         orientation="horizontal"
+        v-model="selected"
       />
     </div>
     <div class="flex items-center justify-between w-full gap-159.5">
