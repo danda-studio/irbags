@@ -3,6 +3,17 @@
 @source "../../../module.mjs";
 @source "../../components/FileInput/FileInput.vue";
 
+@theme {
+  --breakpoint-lg: calc(1440/16 * 1rem);
+}
+
+:root {
+  @apply h-full flex flex-col;
+  @apply text-[calc((16/(375/100))*1vw)];
+  @apply md:text-[calc((16/(1440/100))*1vw)];
+  @apply lg:text-[calc((16/(1920/100))*1vw)];
+}
+
 @theme static {
   --color-secondary-500: #dadada;
   --color-black-500: #000;
@@ -31,4 +42,7 @@
   /**15px */
   --text-xs: 0.9375rem;
   --text-xs--line-height: 1;
+
+  --tracking-tight: -2%;
+  --tracking-tighter: -4%;
 }
