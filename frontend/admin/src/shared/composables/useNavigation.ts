@@ -1,7 +1,14 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { routesMap } from '~/app/routes/types/types'
-import type { NavigationItemsType } from '~/app/routes/types/types'
+
+export type NavigationItemsType = 'главная' | 'товары' | 'фильтры';
+
+export const routesMap: Record<NavigationItemsType, string> = {
+    главная: '/',
+    товары: '/products',
+    фильтры: '/filters',
+}
+
 
 export const useNavigation = () => {
     const router = useRouter()
