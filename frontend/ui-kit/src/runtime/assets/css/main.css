@@ -4,7 +4,7 @@
 @source "../../components/FileInput/FileInput.vue";
 
 @theme {
-  --breakpoint-lg: calc(1440/16 * 1rem);
+  --breakpoint-lg: calc(1440/16 * 1rem + 1px);
 }
 
 :root {
@@ -43,6 +43,6 @@
   --text-xs: 0.9375rem;
   --text-xs--line-height: 1;
 
-  --tracking-tight: -2%;
-  --tracking-tighter: -4%;
+  --tracking-tight: -0.02em;
+  --tracking-tighter: -0.04em;
 }
