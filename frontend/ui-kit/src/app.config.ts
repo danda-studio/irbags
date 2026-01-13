@@ -12,7 +12,7 @@ export const ibgAppConfig = {
           color: "black",
           variant: "link",
           class:
-            "text-black hover:text-secondary disabled:text-secondary active:text-black cursor-pointer text-base leading-none font-medium p-0 bg-transparent active:bg-transparent hover:bg-transparent",
+            "text-black hover:text-secondary disabled:text-secondary active:text-black cursor-pointer text-base tracking-tight max-lg:tracking-tighter  max-lg:text-xs leading-none font-medium p-0 bg-transparent active:bg-transparent hover:bg-transparent",
         },
       ],
       defaultVariants: {
@@ -23,7 +23,7 @@ export const ibgAppConfig = {
     input: {
       slots: {
         base: [
-          "placeholder:text-secondary !text-base !font-medium !p-0 rounded-none leading-none",
+          "placeholder:text-secondary tracking-tight max-lg:tracking-tighter max-lg:!text-xs !text-base !font-medium !p-0 rounded-none leading-none",
         ],
       },
       compoundVariants: [
@@ -48,7 +48,7 @@ export const ibgAppConfig = {
         root: "w-max",
         base: "bg-secondary-500 ring-0 cursor-pointer",
         item: `flex items-center text-black not-has-[button[aria-checked="true"]]:text-secondary-500`,
-        label: "text-inherit font-medium text-4xl cursor-pointer",
+        label: "text-inherit font-medium text-4xl tracking-tight max-lg:tracking-tighter cursor-pointer",
         indicator: "after:bg-transparent cursor-pointer",
       },
       variants: {
@@ -98,7 +98,7 @@ export const ibgAppConfig = {
       slots: {
         root: "rounded-none",
         body: "p-0 sm:p-0",
-        footer: "p-0 sm:px-0 !pl-5 !pt-5 text-base text-black font-medium",
+        footer: "p-0 sm:px-0 !pl-5 !pt-5 tracking-tight max-lg:tracking-tighter max-lg:text-xs text-base text-black font-medium",
       },
       variants: {
         variant: {

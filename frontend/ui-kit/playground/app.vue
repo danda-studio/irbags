@@ -26,8 +26,8 @@ const value = ref("System");
   </div>
   <IBGApp>
     <div class="flex flex-col w-max">
-      <IBGButton>Test</IBGButton>
-      <IBGInput v-model="text" placeholder="Test" />
+      <IBGButton>главная</IBGButton>
+      <IBGInput v-model="text" placeholder="поиск" />
       <IBGRadioGroup v-model="value" :items="items" />
 
       <IBGFileInput />
