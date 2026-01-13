@@ -146,6 +146,11 @@ if (string.IsNullOrWhiteSpace(photoSettings.UploadPath))
     throw new InvalidOperationException("PhotoSettings.UploadPath is not configured");
 }
 
+if (!Directory.Exists(photoSettings.UploadPath))
+{
+    Directory.CreateDirectory(photoSettings.UploadPath);
+}
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(photoSettings.UploadPath),
