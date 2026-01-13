@@ -4,7 +4,6 @@ import ProductsWidget from '~/widgets/products/ui/ProductsWidget.vue'
 definePageMeta({
   layout: 'default',
 })
-
 </script>
 
 <template>

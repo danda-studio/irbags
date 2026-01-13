@@ -3,6 +3,14 @@
 
 @theme {
   --breakpoint-lg: calc(1440/16 * 1rem);
+
+  /* отступы для 1920px */
+  --spacing-220: 13rem;
+  --spacing-40: 1.2rem;
+
+  /* отступы для 1440px */
+  --spacing-145: 9rem;
+  --spacing-30: 1.8rem;
 }
 
 :root {
