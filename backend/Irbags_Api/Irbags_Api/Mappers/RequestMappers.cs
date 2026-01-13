@@ -1,5 +1,6 @@
 
 using Irbags.Application.Photo.Models.Request;
+using Irbags_Api.ImageController.Models.Request;
 
 namespace Irbags_Api.Mappers
 {
@@ -14,19 +15,19 @@ namespace Irbags_Api.Mappers
         public static Irbags.Application.Product.Models.Request.UpdateTagRequest ToApplicationUpdateTagRequest(this ProductController.Models.Request.UpdateTagRequest request, Guid Id)
             => new() { Id = Id, Name = request.Name };
 
-        public static Irbags.Application.Photo.Models.Request.AddImageRequest ToApplicationAddImageRequest(this ImageController.Models.Request.AddImageRequest request)
+        public static Irbags.Application.Photo.Models.Request.AddImagesRequest ToApplicationAddImagesRequest(this ImageController.Models.Request.AddImagesRequest request)
             => new() { 
-                ProductId =  request.ProductId, 
-                Key = request.Key, 
-                Image = new FileUploadImageItem
-                {
-                    Content = request.Image.OpenReadStream(),
-                    FileName = request.Image.FileName,
-                    ContentType = request.Image.ContentType,
-                    Extension = Path.GetExtension(request.Image.FileName).ToLowerInvariant()
-                }
+                ProductId =  request.ProductId,
+                ImageItems = request.ImageItems.Select(i => i.ToApplicationImageItem()).ToList(),
             };
 
+        public static Irbags.Application.Photo.Models.Request.AddImageRequest ToApplicationAddImageRequest(this ImageController.Models.Request.AddImageRequest request)
+            => new()
+            {
+                ProductId = request.ProductId,
+                Key = request.Key,
+                Image = request.Image.ToApplicationFileUploadImageItem(),
+            };
         public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, string key)
             => new() { 
                 Image = new FileUploadImageItem
@@ -69,6 +70,18 @@ namespace Irbags_Api.Mappers
                 FileName = file.FileName,
                 ContentType = file.ContentType,
                 Extension = Path.GetExtension(file.FileName).ToLowerInvariant()
+            };
+        }
+
+        public static Irbags.Application.Photo.Models.Request.ImageItem ToApplicationImageItem(this ImageController.Models.Request.ImageItem image)
+        {
+            if(image == null) return new Irbags.Application.Photo.Models.Request.ImageItem();
+
+            return new Irbags.Application.Photo.Models.Request.ImageItem
+            {
+                Key = image.Key,
+                Image = image.Image.ToApplicationFileUploadImageItem(),
+
             };
         }
 

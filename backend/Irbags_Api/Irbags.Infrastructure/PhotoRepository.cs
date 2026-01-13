@@ -45,27 +45,87 @@ namespace Irbags.Infrastructure
             return image;
         }
 
-        public async Task<AddImageResponse> AddImage(AddImageRequest request)
+        //public async Task<AddImagesResponse> AddImages(Guid? productId, string key, string extension)
+        //{
+        //    var imageEntity = new ProductImage
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Name = key,
+        //        Extension = extension,
+        //    };
+
+        //    if (productId != null)
+        //    {
+        //        var product = await _dbContext.Products
+        //            .Include(p => p.Images)
+        //            .FirstOrDefaultAsync(p => p.Id == productId);
+
+        //        if (product != null)
+        //        {
+        //            product.Images ??= new List<ProductImage>();
+        //            product.Images.Add(imageEntity);
+        //            imageEntity.Product = product;
+        //        }
+        //    }
+
+        //    _dbContext.ProductImages.Add(imageEntity);
+        //    await _dbContext.SaveChangesAsync();
+
+        //    return new AddImagesResponse
+        //    {
+        //        Id = imageEntity.Id,
+        //        Name = imageEntity.Name,
+        //        RelativeUrl = $"/uploads/{imageEntity.Name}{imageEntity.Extension}"
+        //    };
+        //}
+
+        public async Task AddImagesBatch(List<ProductImage> images, Guid? productId)
+        {
+            if (images == null || images.Count == 0)
+                return;
+            if (productId != null)
+            {
+                var product = await _dbContext.Products
+                    .Include(p => p.Images)
+                    .FirstOrDefaultAsync(p => p.Id == productId);
+                
+                if (product != null)
+                {
+                    product.Images ??= new List<ProductImage>();
+                    foreach (var image in images)
+                    {
+                        product.Images.Add(image);
+                    }
+                }
+            }
+
+            _dbContext.ProductImages.AddRange(images);
+
+            await _dbContext.SaveChangesAsync(); 
+        }
+
+
+        public async Task<AddImageResponse> AddImage(Guid? productId, string key, string extension)
         {
             var imageEntity = new ProductImage
             {
                 Id = Guid.NewGuid(),
-                Name = request.Key,
-                Extension = request.Image.Extension,
+                Name = key,
+                Extension = extension,
             };
 
-            if (request.ProductId != null)
+            if (productId != null)
             {
                 var product = await _dbContext.Products
                     .Include(p => p.Images)
-                    .FirstOrDefaultAsync(p => p.Id == request.ProductId);
+                    .FirstOrDefaultAsync(p => p.Id == productId);
 
                 if (product != null)
                 {
                     product.Images ??= new List<ProductImage>();
                     product.Images.Add(imageEntity);
                     imageEntity.Product = product;
-                } 
+                }
             }
 
             _dbContext.ProductImages.Add(imageEntity);
@@ -79,20 +139,20 @@ namespace Irbags.Infrastructure
             };
         }
 
-        public async Task<UpdateImageResponse?> UpdateImage(UpdateImageRequest request)
+        public async Task<UpdateImageResponse?> UpdateImage(string key)
         {
             var image = await _dbContext.ProductImages
-                .FirstOrDefaultAsync(t => t.Name == request.Key);
+                .FirstOrDefaultAsync(t => t.Name == key);
 
             if (image == null)
                 return null;
 
-            image.Name = request.Key;
+            image.Name = key;
             await _dbContext.SaveChangesAsync();
 
             return new UpdateImageResponse
             {
-                Id = image.Id,
+                ProductId = image.Product.Id,
                 Name = image.Name,
                 RelativeUrl = $"/uploads/{image.Name}{image.Extension}"
             };

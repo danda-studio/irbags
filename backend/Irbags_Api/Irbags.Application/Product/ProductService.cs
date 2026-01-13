@@ -34,17 +34,14 @@ namespace Irbags.Application.Product
         public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
 
-            //var product = await _productRepository.CreateProduct(request);
+            var product = await _productRepository.CreateProduct(request);
 
-            //await _photoService.AddImage(new AddImageRequest
-            //{
-            //    ProductId = request.Id,
-            //    Key = request.Name,
-            //    Image = request.Images.Select(i => new FileUploadImageItem())
-            //});
+            await _photoService.AddImages(new AddImagesRequest
+            {
+                ProductId = request.Id
+            });
 
-            //return product;
-            return new CreateProductResponse();
+            return product;
         }
 
         public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)

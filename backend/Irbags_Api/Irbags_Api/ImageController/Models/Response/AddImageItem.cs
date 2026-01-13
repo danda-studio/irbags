@@ -1,8 +1,7 @@
 ﻿namespace Irbags_Api.ImageController.Models.Response
 {
-    public class UpdateImageResponse
+    public class AddImageItem
     {
-        public Guid ProductId { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
     }

@@ -74,6 +74,24 @@ namespace Irbags_Api.ImageController
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPost("batch")]
+        public async Task<ActionResult<List<AddImagesResponse>>> AddImages([FromForm] AddImagesRequest request)
+        {
+            var result = await _photoService.AddImages(request.ToApplicationAddImagesRequest());
+
+            var baseUrl = _settings.BaseUrl.TrimEnd('/');
+
+            return Ok(new AddImagesResponse
+            {
+                Images = result.Images.Select(img => new AddImageItem
+                {
+                    Name = img.Name,
+                    ImageUrl = $"{baseUrl}{img.RelativeUrl}"
+                }).ToList()
+            });
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{key}")]
         public async Task<ActionResult<UpdateImageResponse>> UpdateImage(string key, [FromBody] UpdateImageRequest request)
         {
@@ -85,6 +103,7 @@ namespace Irbags_Api.ImageController
 
                 return Ok(new UpdateImageResponse
                 {
+                    ProductId = result.ProductId,
                     Name = result.Name,
                     ImageUrl = $"{baseUrl}{result.RelativeUrl}" 
                 });

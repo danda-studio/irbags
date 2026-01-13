@@ -51,13 +51,9 @@ namespace Irbags.Application.Photo
                 throw new ArgumentException($"Only the following formats are allowed: {string.Join(", ", _allowedExtensions)}");
             }
 
-            var savedFileName = await _fileService.SaveFile(request.Image, _allowedExtensions, $"{request.Key}{extension}");
+            var savedFileUrl = await _fileService.SaveFile(request.Image, _allowedExtensions);
 
-            var image = await _photoRepository.UpdateImage(new UpdateImageRequest
-            {
-                Image = request.Image,
-                Key = request.Key
-            });
+            var image = await _photoRepository.UpdateImage(request.Key);
 
             if(image == null)
             {
@@ -66,16 +62,54 @@ namespace Irbags.Application.Photo
 
             return new UpdateImageResponse
             {
-                Id = image.Id,
+                ProductId = image.ProductId,
                 Name = image.Name,
-                RelativeUrl = image.RelativeUrl
+                RelativeUrl = savedFileUrl,
             };
         }
 
+        public async Task<AddImagesResponse> AddImages(AddImagesRequest request)
+        {
+            if (request.ImageItems == null || request.ImageItems.Count == 0)
+                throw new ArgumentException("At least one image is required.");
+
+            if (request.ImageItems.Count > 6)
+                throw new ArgumentException("You can upload no more than 6 images.");
+
+            foreach (var item in request.ImageItems)
+            {
+                var extension = Path.GetExtension(item.Image.FileName).ToLowerInvariant();
+                if (!_allowedExtensions.Contains(extension))
+                    throw new ArgumentException($"Invalid format: {extension}");
+            }
+
+            var savedFiles = await _fileService.SaveFiles(
+                request.ImageItems.Select(x => x.Image).ToList(),
+                _allowedExtensions);
+
+            var images = savedFiles.Select(file => new ProductImage
+            {
+                Id = Guid.NewGuid(),
+                Name = file.FileName,
+                Extension = Path.GetExtension(file.FileName)
+            }).ToList();
+
+            await _photoRepository.AddImagesBatch(images, request.ProductId);
+
+            return new AddImagesResponse
+            {
+                Images = images.Select(img => new ImageResultItem
+                {
+                    Name = img.Name,
+                    RelativeUrl = $"/uploads/{img.Name}{img.Extension}"
+                }).ToList()
+            };
+        }
+
+
         public async Task<AddImageResponse> AddImage(AddImageRequest request)
         {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
+            ArgumentNullException.ThrowIfNull(request);
 
             if (request.Image == null)
                 throw new ArgumentException("Image file is required.");
@@ -86,16 +120,16 @@ namespace Irbags.Application.Photo
                 throw new ArgumentException($"Only the following formats are allowed: {string.Join(", ", _allowedExtensions)}");
             }
 
-            var savedFileName = await _fileService.SaveFile(request.Image, _allowedExtensions, $"{request.Key}{extension}");
+            var savedFileName = await _fileService.SaveFile(request.Image, _allowedExtensions);
 
-            var response = await _photoRepository.AddImage(new AddImageRequest
+            var image = await _photoRepository.AddImage(request.ProductId, request.Image.FileName, extension);
+
+            return new AddImageResponse
             {
-                ProductId = request.ProductId,
-                Image = request.Image,
-                Key = request.Key
-            });
-
-            return response;
+                Id = image.Id,
+                Name = image.Name,
+                RelativeUrl = savedFileName,
+            };
         }
 
         public async Task<bool> DeleteImage(string key)

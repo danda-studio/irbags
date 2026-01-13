@@ -7,6 +7,7 @@ namespace Irbags.Application.Photo
     {
         public Task<IReadOnlyCollection<GetImageResponse>> GetImages();
         public Task<GetImageResponse> GetImage(string key);
+        public Task<AddImagesResponse> AddImages(AddImagesRequest request);
         public Task<AddImageResponse> AddImage(AddImageRequest request);
         public Task<UpdateImageResponse> UpdateImage(UpdateImageRequest request);
         public Task<bool> DeleteImage(string key);
