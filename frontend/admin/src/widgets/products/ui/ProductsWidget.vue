@@ -13,15 +13,15 @@ const products: Product[] = Array.from({ length: 16 }, (_, i) => ({
 </script>
 
 <template>
-  <section class="pt-220 :lg-pt-145 w-screen px-0 pb-40">
-    <div class="grid grid-cols-4 gap-x-0 gap-y-40 :lg-gap-y-30">
+  <section class="pt-36.25 lg:pt-55 w-screen px-0 pb-2">
+    <div class="grid grid-cols-4 gap-x-0 gap-y-5">
       <IBGCard
           v-for="product in products"
           :key="product.id"
           class="mt-5"
       >
         <template #default>
-          <div class="bg-secondary-500 w-120 h-170.75"/>
+          <div class="bg-secondary-500 w-90 h-138.75 lg:w-120 lg:h-170.75"/>
         </template>
 
         <template #footer>
