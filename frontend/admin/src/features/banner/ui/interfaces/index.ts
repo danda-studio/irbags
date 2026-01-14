@@ -1,1 +1,1 @@
-export * from "./props";
+export type { BannerFeatureProps } from "./props";
