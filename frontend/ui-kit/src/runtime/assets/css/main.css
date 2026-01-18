@@ -3,12 +3,6 @@
 @source "../../../module.mjs";
 @source "../../components/FileInput/FileInput.vue";
 
-@font-face {
-  font-family: "Helvetica Neue";
-  src: url("../fonts/HelveticaNeueMedium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-}
 
 @theme {
   --breakpoint-lg: calc(1440/16 * 1rem + 1px);
@@ -19,10 +13,6 @@
   @apply text-[calc((16/(375/100))*1vw)];
   @apply md:text-[calc((16/(1440/100))*1vw)];
   @apply lg:text-[calc((16/(1920/100))*1vw)];
-}
-
-body {
-  font-family: "Helvetica Neue";
 }
 
 @theme static {
