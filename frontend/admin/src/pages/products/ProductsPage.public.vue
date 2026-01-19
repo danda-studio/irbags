@@ -1,0 +1,4 @@
+
+<template>
+  <ProductWidget />
+</template>

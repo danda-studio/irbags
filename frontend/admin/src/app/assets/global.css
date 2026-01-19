@@ -1,17 +1,6 @@
 @import "tailwindcss";
 @import "@irbags/ui-kit";
 
-@theme {
-  --breakpoint-lg: calc(1440/16 * 1rem);
-}
-
-:root {
-  @apply h-full flex flex-col;
-  @apply text-[calc((16/(375/100))*1vw)];
-  @apply md:text-[calc((16/(1440/100))*1vw)];
-  @apply lg:text-[calc((16/(1920/100))*1vw)];
-}
-
 ::-webkit-scrollbar {
   width: 0;
 }

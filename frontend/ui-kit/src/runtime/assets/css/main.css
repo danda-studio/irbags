@@ -3,6 +3,20 @@
 @source "../../../module.mjs";
 @source "../../components/FileInput/FileInput.vue";
 
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("../fonts/HelveticaNeueMedium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("../fonts/HelveticaNeueRoman.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 @theme {
   --breakpoint-lg: calc(1440/16 * 1rem + 1px);
 }
@@ -21,6 +35,8 @@
   --color-error-500: #ff2a2a;
   --color-gray-500: #d7d7d7;
   --ui-text-muted: #fff;
+
+  --font-sans: 'Helvetica Neue';
 
   /**55px */
   --text-6xl: 3.4375rem;
