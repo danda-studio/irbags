@@ -37,7 +37,7 @@ const value = ref("System");
           <div class="bg-secondary-500 w-120 h-170.75" />
         </template>
         <template #footer>
-          <div>Сумка Kelly</div>
+          <div>сумка kelly</div>
           <div>69 €</div>
         </template>
       </IBGCard>
