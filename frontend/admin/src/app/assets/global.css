@@ -1,16 +1,6 @@
 @import "tailwindcss";
 @import "@irbags/ui-kit";
 
-@font-face {
-  font-family: "Helvetica Neue";
-  src: url("./fonts/HelveticaNeueMedium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-body {
-  font-family: "Helvetica Neue";
-}
 
 ::-webkit-scrollbar {
   width: 0;
