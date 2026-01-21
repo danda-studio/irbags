@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+import ResizebleInput from '../src/runtime/components/ResizebleInput/ResizebleInput.vue';
+
 const text = ref();
 
 const items = ref(["System", "Light", "Dark"]);
 const value = ref("System");
+
+const resizebleInputValue = ref('поиск')
 </script>
 
 <template>
@@ -34,7 +38,7 @@ const value = ref("System");
 
       <IBGCard class="mt-5">
         <template #default>
-          <div class="bg-secondary-500 w-120 h-170.75" />
+          <div class="bg-secondary-500 w-120 h-70.75" />
         </template>
         <template #footer>
           <div>сумка kelly</div>
@@ -42,5 +46,6 @@ const value = ref("System");
         </template>
       </IBGCard>
     </div>
+    <ResizebleInput v-model="resizebleInputValue" />
   </IBGApp>
 </template>
