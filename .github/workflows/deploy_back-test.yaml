@@ -1,0 +1,50 @@
+name: CI/CD Docker Staging (Backend)
+
+on:
+  push:
+    branches: 
+      - develop 
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy_back-test.yaml"
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/Irbags_Api
+          file: ./backend/Irbags_Api/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
+
+      - name: Deploy on staging server
+        shell: powershell
+        run: |
+            Set-Location ./backend/Irbags_Api
+
+            # Экспортируем переменные окружения
+            $env:DB_USER_STAGING = "${{ secrets.DB_USER_STAGING }}"
+            $env:DB_PASS_STAGING = "${{ secrets.DB_PASS_STAGING }}"
+            $env:DB_NAME_STAGING = "${{ secrets.DB_NAME_STAGING }}"
+            $env:DB_HOST_STAGING = "${{ secrets.DB_HOST_STAGING }}"
+            $env:DB_PORT_STAGING = "${{ secrets.DB_PORT_STAGING }}"
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
+
+            # Полностью удаляем старый контейнер API и создаём новый
+            docker compose rm -fs api
+            docker compose up -d --no-build api
+
+            docker compose ps
