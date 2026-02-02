@@ -67,7 +67,7 @@ export default defineNuxtModule<ModuleOptions>({
     // 3. Ставим модуль пакетом
     await installModules(modulesToInstall, installed, _nuxt);
 
-    const { ui: { colors, button, card, fileUpload, input, radioGroup } } = ibgAppConfig;
+    const { ui: { colors, button, card, fileUpload, input, radioGroup, textarea } } = ibgAppConfig;
 
     // Кастомизируем компоненты
     _nuxt.options.appConfig = {
@@ -80,6 +80,7 @@ export default defineNuxtModule<ModuleOptions>({
         fileUpload,
         input,
         radioGroup,
+        textarea,
       },
     };
 

@@ -6,6 +6,22 @@ export const ibgAppConfig = {
       error: "error",
       secondary: "secondary",
     },
+    textarea: {
+      variants: {
+        variant: {
+          outline: `
+        !ring-0
+        !focus:ring-0
+        !focus-visible:ring-0
+      `,
+        },
+        size: {
+          md: {
+            base: "p-0 tracking-tight max-lg:tracking-tighter max-lg:text-xs text-base font-medium",
+          },
+        },
+      },
+    },
     button: {
       compoundVariants: [
         {
