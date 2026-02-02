@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "@irbags/ui-kit";
 
+:root {
+  @apply h-full flex flex-col;
+}
 
 ::-webkit-scrollbar {
   width: 0;
