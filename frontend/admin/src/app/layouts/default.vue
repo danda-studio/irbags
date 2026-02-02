@@ -1,4 +1,0 @@
-<template>
-  <LayoutHeaderWidget />
-  <slot />
-</template>
