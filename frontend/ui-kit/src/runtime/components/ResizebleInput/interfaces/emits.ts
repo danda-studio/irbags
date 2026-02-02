@@ -1,3 +1,3 @@
 export interface ResizebleInputEmits {
-    'update:modelValue': [value: string];
+  "update:modelValue": [value: string];
 }

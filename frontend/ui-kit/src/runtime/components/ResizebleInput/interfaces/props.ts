@@ -1,3 +1,4 @@
 export interface ResizebleInputProps {
-    modelValue: string;
+  modelValue: string;
+  placeholder: string;
 }

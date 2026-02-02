@@ -3,7 +3,6 @@
 @source "../../../module.mjs";
 @source "../../components/FileInput/FileInput.vue";
 
-
 @font-face {
   font-family: "Helvetica Neue";
   src: url("../fonts/HelveticaNeueRoman.woff") format("woff");
@@ -36,7 +35,7 @@
   --color-gray-500: #d7d7d7;
   --ui-text-muted: #fff;
 
-  --font-sans: 'Helvetica Neue';
+  --font-sans: "Helvetica Neue";
 
   /**55px */
   --text-6xl: 3.4375rem;
