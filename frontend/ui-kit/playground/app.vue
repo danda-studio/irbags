@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import ResizebleInput from "../src/runtime/components/ResizebleInput/ResizebleInput.vue";
 
 const text = ref();
 
@@ -71,7 +70,7 @@ const resizebleInputValue = ref("");
         </template>
       </IBGCard>
     </div>
-    <ResizebleInput v-model="resizebleInputValue" placeholder="поиск" />
+    <IBGResizebleInput v-model="resizebleInputValue" placeholder="поиск" />
     <IBGTextarea />
   </IBGApp>
 </template>
