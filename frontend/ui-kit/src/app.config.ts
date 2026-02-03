@@ -17,7 +17,7 @@ export const ibgAppConfig = {
         },
         size: {
           md: {
-            base: "p-0 tracking-tight max-lg:tracking-tighter max-lg:text-xs text-base font-medium",
+            base: "p-0 tracking-tight max-lg:tracking-tighter max-lg:text-xs text-base placeholder:text-secondary font-medium",
           },
         },
       },
