@@ -1,6 +1,4 @@
-﻿
-
-namespace Irbags.Application.Photo.Models.Request
+﻿namespace Irbags.Application.Photo.Models.Request
 {
     public class FileUploadImageItem
     {

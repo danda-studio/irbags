@@ -25,21 +25,19 @@ namespace Irbags_Api.ProductController
             return Ok(result);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<GetProductResponse>> GetProduct(Guid id)
-        {
-            try
-            {
-                var result = await _productService.GetProduct(id);
-
-                return Ok(result);
-            }
-            catch
-            {
-                return NotFound();
-            }
-
-        }
+        //[HttpGet("{id:guid}")]
+        //public async Task<ActionResult<GetProductResponse>> GetProduct(Guid id)
+        //{
+        //    try
+        //    {
+        //        var result = await _productService.GetProduct(id);
+        //        return Ok(result);
+        //    }
+        //    catch
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -47,16 +45,16 @@ namespace Irbags_Api.ProductController
         {
             var result = await _productService.CreateProduct(request.ToApplicationCreateProductRequest());
 
-            return new CreateProductResponse();
+            return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         public async Task<ActionResult<UpdateProductResponse>> UpdateProduct(Guid id, [FromBody] UpdateProductRequest request)
         {
             try
             {
-                var result = await _productService.UpdateProduct(request.ToApplicationUpdateProductRequest());
+                var result = await _productService.UpdateProduct(request.ToApplicationUpdateProductRequest(id));
 
                 return Ok(result);
             }

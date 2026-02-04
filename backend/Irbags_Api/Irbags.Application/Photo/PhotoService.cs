@@ -23,6 +23,12 @@ namespace Irbags.Application.Photo
             return images;
         }
 
+        public async Task<IReadOnlyCollection<GetImageResponse>> GetImagesByProductId(Guid Id)
+        {
+            var images = await _photoRepository.GetImagesByProductId(Id);
+            return images;
+        }
+
         public async Task<GetImageResponse> GetImage(string key)
         {
             var image = await _photoRepository.GetImage(key);
@@ -105,7 +111,6 @@ namespace Irbags.Application.Photo
                 }).ToList()
             };
         }
-
 
         public async Task<AddImageResponse> AddImage(AddImageRequest request)
         {

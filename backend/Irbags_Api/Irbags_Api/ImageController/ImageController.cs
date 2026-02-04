@@ -37,7 +37,7 @@ namespace Irbags_Api.ImageController
         }
 
         [HttpGet("{key}")]
-        public async Task<ActionResult<GetImageResponse>> GetImage(string key)
+        public async Task<ActionResult<GetImageResponse>> GetImageByKey(string key)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Irbags_Api.ImageController
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{key}")]
+        [HttpPut]
         public async Task<ActionResult<UpdateImageResponse>> UpdateImage(string key, [FromBody] UpdateImageRequest request)
         {
             try
@@ -115,7 +115,7 @@ namespace Irbags_Api.ImageController
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{key}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteImage(string key)
         {
             var result = await _photoService.DeleteImage(key);

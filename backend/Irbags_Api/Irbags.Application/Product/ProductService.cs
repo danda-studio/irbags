@@ -4,6 +4,7 @@ using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
 
+
 namespace Irbags.Application.Product
 {
     public class ProductService : IProductService
@@ -24,24 +25,48 @@ namespace Irbags.Application.Product
             return products;
         }
 
-        public async Task<GetProductResponse> GetProduct(Guid Id)
-        {
-            var product = await _productRepository.GetProduct(Id);
+        //public async Task<GetProductResponse> GetProduct(Guid Id)
+        //{
+        //    var product = await _productRepository.GetProduct(Id);
 
-            return product ?? throw new KeyNotFoundException($"Product with id '{Id}' not found");
-        }
+        //    var images = await _photoService.GetImages();
+
+        //    return product ?? throw new KeyNotFoundException($"Product with id '{Id}' not found");
+        //}
 
         public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
 
             var product = await _productRepository.CreateProduct(request);
 
-            await _photoService.AddImages(new AddImagesRequest
+            var image = await _photoService.AddImages(new AddImagesRequest
             {
-                ProductId = request.Id
+                ProductId = product.Id,
+                ImageItems = request.Images
             });
 
-            return product;
+            return new CreateProductResponse
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Discount = product.Discount,
+                Description = product.Description,
+                ShortDescription = product.ShortDescription,
+                Size = product.Size,
+                TagId = product.TagId,
+                Colors = product.Colors.Select(c => new ColorItem
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                }).ToList(),
+                Images = image.Images.Select(i => new Models.Response.ImageItem
+                {
+                    Id = i.Id,
+                    ImageUrl = i.RelativeUrl
+                }).ToList()
+            };
+
         }
 
         public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)

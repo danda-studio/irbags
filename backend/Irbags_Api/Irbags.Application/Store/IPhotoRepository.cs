@@ -6,6 +6,7 @@ namespace Irbags.Application.Store
 {
     public interface IPhotoRepository
     {
+        Task<IReadOnlyCollection<GetImageResponse>> GetImagesByProductId(Guid Id);
         Task<IReadOnlyCollection<GetImageResponse>> GetImages();
         Task<GetImageResponse?> GetImage(string key);
         Task<AddImageResponse> AddImage(Guid? productId, string key, string extension);

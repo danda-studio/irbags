@@ -29,6 +29,20 @@ namespace Irbags.Infrastructure
 
             return new ReadOnlyCollection<GetImageResponse>(images);
         }
+        public async Task<IReadOnlyCollection<GetImageResponse>> GetImagesByProductId(Guid Id)
+        {
+            var images = await _dbContext.ProductImages
+                .Where(i => i.Product.Id == Id)
+                .AsNoTracking()
+                .Select(t => new GetImageResponse
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    RelativeUrl = $"/uploads/{t.Name}{t.Extension}"
+                }).ToListAsync();
+
+            return new ReadOnlyCollection<GetImageResponse>(images);
+        }
 
         public async Task<GetImageResponse?> GetImage(string key)
         {

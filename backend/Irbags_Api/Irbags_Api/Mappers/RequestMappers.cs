@@ -28,6 +28,7 @@ namespace Irbags_Api.Mappers
                 Key = request.Key,
                 Image = request.Image.ToApplicationFileUploadImageItem(),
             };
+
         public static Irbags.Application.Photo.Models.Request.UpdateImageRequest ToApplicationUpdateImageRequest(this ImageController.Models.Request.UpdateImageRequest request, string key)
             => new() { 
                 Image = new FileUploadImageItem
@@ -48,18 +49,45 @@ namespace Irbags_Api.Mappers
                 Size = request.Size,
                 Price = request.Price,
                 Discount = request.Discount,
-                Tag = request.Tag.ToApplicationProductTagItem(),
-                Colors = request.Colors.Select(c => c.ToApplicationProductColorItem()).ToList(),
-                Images = request.Images.Select(i => i.ToApplicationFileUploadImageItem()).ToList(),
+                TagId = request.TagId,
+                ColorIds = request.ColorIds,
+                Images = request.Images
+                    .Select(i => new Irbags.Application.Photo.Models.Request.ImageItem
+                    {
+                        Key = Guid.NewGuid().ToString(), // или своя логика
+                        Image = i.Image.ToApplicationFileUploadImageItem()
+                    })
+                    .ToList(),
+
             };
-        public static Irbags.Application.Product.Models.Request.UpdateProductRequest ToApplicationUpdateProductRequest(this ProductController.Models.Request.UpdateProductRequest request)
-            => new() { };
+
+        public static Irbags.Application.Product.Models.Request.UpdateProductRequest ToApplicationUpdateProductRequest(this ProductController.Models.Request.UpdateProductRequest request, Guid Id)
+            => new() 
+            {
+                Id = Id,
+                TagId = request.TagId,
+                ColorIds = request.ColorIds,
+                Name = request.Name,
+                Description = request.Description,
+                ShortDescription = request.ShortDescription,
+                Size = request.Size,
+                Price = request.Price,
+                Discount = request.Discount,
+                Images = request.Images
+                    .Select(i => new Irbags.Application.Photo.Models.Request.ImageItem
+                    {
+                        Key = Guid.NewGuid().ToString(),
+                        Image = i.Image.ToApplicationFileUploadImageItem()
+                    })
+                    .ToList(),
+            };
 
         public static Irbags.Application.Product.Models.Request.ProductTagItem ToApplicationProductTagItem(this ProductController.Models.Request.ProductTagItem request)
             => new() { Id = request.Id, Name = request.Name};
 
         public static Irbags.Application.Product.Models.Request.ProductColorItem ToApplicationProductColorItem(this ProductController.Models.Request.ProductColorItem request)
             => new() { Id = request.Id, Name = request.Name};
+        
         public static FileUploadImageItem ToApplicationFileUploadImageItem(this IFormFile file)
         {
             if (file == null) return new FileUploadImageItem();

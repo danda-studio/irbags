@@ -5,8 +5,9 @@ namespace Irbags.Application.Photo
 {
     public interface IPhotoService
     {
-        public Task<IReadOnlyCollection<GetImageResponse>> GetImages();
+        public Task<IReadOnlyCollection<GetImageResponse>> GetImagesByProductId(Guid Id);
         public Task<GetImageResponse> GetImage(string key);
+        public Task<IReadOnlyCollection<GetImageResponse>> GetImages();
         public Task<AddImagesResponse> AddImages(AddImagesRequest request);
         public Task<AddImageResponse> AddImage(AddImageRequest request);
         public Task<UpdateImageResponse> UpdateImage(UpdateImageRequest request);
