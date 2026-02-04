@@ -1,4 +1,3 @@
-
 <template>
   <ProductWidget />
 </template>

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@irbags/ui-kit':
-        specifier: 1.0.1-alpha.26
-        version: 1.0.1-alpha.26(@babel/parser@7.28.5)(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.0)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.55.1)(terser@5.44.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))(yaml@2.8.2)(zod@4.3.5)
+        specifier: 1.0.1-alpha.30
+        version: 1.0.1-alpha.30(@babel/parser@7.28.5)(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.0)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.55.1)(terser@5.44.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))(yaml@2.8.2)(zod@4.3.5)
       '@nuxt/eslint':
         specifier: 1.12.1
         version: 1.12.1(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(@vue/compiler-sfc@3.5.26)(eslint-plugin-format@1.2.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(magicast@0.5.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
@@ -723,8 +723,8 @@ packages:
   '@ioredis/commands@1.5.0':
     resolution: {integrity: sha512-eUgLqrMf8nJkZxT24JvVRrQya1vZkQh8BBeYNwGDqa5I0VUi8ACx7uFvAaLxintokpTenkK6DASvo/bvNbBGow==}
 
-  '@irbags/ui-kit@1.0.1-alpha.26':
-    resolution: {integrity: sha512-eVdfkuxYCrK/bYyMFoegU5/CdEI0XRMA9qc4E4AfQ8n9I/Xot6reujPVBOGVZQvfFu41Ggl+MQ/hJoXGKf6uhg==}
+  '@irbags/ui-kit@1.0.1-alpha.30':
+    resolution: {integrity: sha512-3cIXoYlSzvbcVM6ZQ7rrNTSP36veFYlvwfuT2KHoDcchakidPMm5EwIGON8jFGIKlUWIcNQY9Uzoypq3WllOJA==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -5667,7 +5667,7 @@ snapshots:
 
   '@ioredis/commands@1.5.0': {}
 
-  '@irbags/ui-kit@1.0.1-alpha.26(@babel/parser@7.28.5)(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.0)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.55.1)(terser@5.44.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))(yaml@2.8.2)(zod@4.3.5)':
+  '@irbags/ui-kit@1.0.1-alpha.30(@babel/parser@7.28.5)(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.0)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.55.1)(terser@5.44.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))(yaml@2.8.2)(zod@4.3.5)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxt/ui': 3.3.7(@babel/parser@7.28.5)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(ioredis@5.9.0)(magicast@0.5.1)(typescript@5.9.3)(vite@7.3.0(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))(zod@4.3.5)

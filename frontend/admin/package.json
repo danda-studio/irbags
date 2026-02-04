@@ -13,7 +13,7 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "@irbags/ui-kit": "1.0.1-alpha.26",
+    "@irbags/ui-kit": "1.0.1-alpha.30",
     "@nuxt/eslint": "1.12.1",
     "eslint": "^9.39.2",
     "nuxt": "3.18.1",
