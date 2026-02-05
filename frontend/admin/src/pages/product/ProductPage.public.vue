@@ -61,7 +61,11 @@ function filterColors() {
             </div>
             <div class="w-123.75 pl-5 pr-5">
                 <div class="mt-55">
-                    <IBGResizebleInput v-model="data.name" placeholder="название" />
+                    <IBGResizebleInput v-model="data.name" :config="{
+                        ui: {
+                            base: ['!text-4xl']
+                        }
+                    }" placeholder="название" />
                     <div>
                         <IBGResizebleInput v-model="data.price" placeholder="сумма" />
                         <IBGResizebleInput v-model="data.discount" placeholder="скидка" />
