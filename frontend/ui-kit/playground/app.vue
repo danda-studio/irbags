@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 const text = ref();
 
 const items = ref(["System", "Light", "Dark"]);
@@ -70,11 +69,13 @@ const resizebleInputValue = ref("");
         </template>
       </IBGCard>
     </div>
-    <IBGResizebleInput v-model="resizebleInputValue" :config="{
-      ui: {
-        base: ['placeholder:text-error-500']
-      }
-    }" placeholder="поиск" />
+    <IBGResizebleInput
+      v-model="resizebleInputValue" style-label="!text-6xl" :config="{
+        ui: {
+          base: ['placeholder:text-error-500 !text-6xl'],
+        },
+      }" placeholder="поиск"
+    />
     <IBGTextarea placeholder="поиск поиск" />
   </IBGApp>
 </template>
