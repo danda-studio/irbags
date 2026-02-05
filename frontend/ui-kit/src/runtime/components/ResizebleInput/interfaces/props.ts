@@ -10,5 +10,5 @@ export interface ResizebleInputProps {
   /** Конфиг */
   config?: InputProps;
   /** Стили для label */
-  styleLabel: string;
+  styleLabel?: string;
 }
