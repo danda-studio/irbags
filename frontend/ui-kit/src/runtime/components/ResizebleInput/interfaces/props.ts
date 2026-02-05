@@ -1,4 +1,4 @@
-import type { AppConfig } from "nuxt/schema";
+import type { InputProps } from '#ui/types'
 
 export interface ResizebleInputProps {
   /**Значение */
@@ -8,6 +8,6 @@ export interface ResizebleInputProps {
   /**Тип инпута */
   type?: 'text' | 'number' | 'password' | 'email';
   /**Конфиг */
-  config?: AppConfig;
+  config?: InputProps;
 }
 

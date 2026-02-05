@@ -70,7 +70,11 @@ const resizebleInputValue = ref("");
         </template>
       </IBGCard>
     </div>
-    <IBGResizebleInput v-model="resizebleInputValue" placeholder="поиск" />
+    <IBGResizebleInput v-model="resizebleInputValue" :config="{
+      ui: {
+        base: ['placeholder:text-error-500']
+      }
+    }" placeholder="поиск" />
     <IBGTextarea placeholder="поиск поиск" />
   </IBGApp>
 </template>
