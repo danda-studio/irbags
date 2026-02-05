@@ -3,7 +3,9 @@ import type { ResizebleInputEmits, ResizebleInputProps } from "./interfaces";
 import { computed } from "vue";
 
 /** Параметры */
-const props = defineProps<ResizebleInputProps>();
+const props = withDefaults(defineProps<ResizebleInputProps>(), {
+  type: 'text',
+});
 /** События */
 const emit = defineEmits<ResizebleInputEmits>();
 
@@ -21,6 +23,6 @@ const value = computed({
     <span class="text-base opacity-0 max-lg:text-xs tracking-tight max-lg:tracking-tighter font-medium">
       {{ value || placeholder }}
     </span>
-    <IBGInput v-model="value" :placeholder="placeholder" class="absolute inset-0" />
+    <IBGInput v-model="value" :type="type" :placeholder="placeholder" :ui="config?.ui" class="absolute inset-0" />
   </label>
 </template>
