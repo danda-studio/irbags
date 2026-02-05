@@ -1,13 +1,14 @@
-import type { InputProps } from '#ui/types'
+import type { InputProps } from "#ui/types";
 
 export interface ResizebleInputProps {
-  /**Значение */
+  /** Значение */
   modelValue: string | number | null;
-  /**Подсказка */
+  /** Подсказка */
   placeholder: string;
-  /**Тип инпута */
-  type?: 'text' | 'number' | 'password' | 'email';
-  /**Конфиг */
+  /** Тип инпута */
+  type?: "text" | "number" | "password" | "email";
+  /** Конфиг */
   config?: InputProps;
+  /** Стили для label */
+  styleLabel: string;
 }
-
