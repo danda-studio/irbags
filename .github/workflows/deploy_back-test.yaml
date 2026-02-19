@@ -32,19 +32,40 @@ jobs:
       - name: Deploy on staging server
         shell: powershell
         run: |
+          try {
             Set-Location ./backend/Irbags_Api
-
-            # Экспортируем переменные окружения
-            $env:DB_USER_STAGING = "${{ secrets.DB_USER_STAGING }}"
-            $env:DB_PASS_STAGING = "${{ secrets.DB_PASS_STAGING }}"
-            $env:DB_NAME_STAGING = "${{ secrets.DB_NAME_STAGING }}"
-            $env:DB_HOST_STAGING = "${{ secrets.DB_HOST_STAGING }}"
-            $env:DB_PORT_STAGING = "${{ secrets.DB_PORT_STAGING }}"
-
+            
+            Write-Host "Pulling latest image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/irbags_api:staging
-
-            # Полностью удаляем старый контейнер API и создаём новый
-            docker compose rm -fs api
-            docker compose up -d --no-build api
-
+            
+            # Создаём .env файл с переменными окружения
+            Write-Host "Creating .env file..."
+            @"
+            DB_USER_STAGING=${{ secrets.DB_USER_STAGING }}
+            DB_PASS_STAGING=${{ secrets.DB_PASS_STAGING }}
+            DB_NAME_STAGING=${{ secrets.DB_NAME_STAGING }}
+            DB_HOST_STAGING=${{ secrets.DB_HOST_STAGING }}
+            DB_PORT_STAGING=${{ secrets.DB_PORT_STAGING }}
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            "@ | Out-File -FilePath .env -Encoding UTF8
+            
+            Write-Host "Stopping old containers..."
+            docker compose down
+            
+            Write-Host "Starting new containers..."
+            docker compose --env-file .env up -d
+            
+            Write-Host "Waiting for services to be ready..."
+            Start-Sleep -Seconds 10
+            
+            Write-Host "Containers status:"
             docker compose ps
+            
+            Write-Host "Checking logs..."
+            docker compose logs api --tail=20
+            
+          } catch {
+            Write-Error "Deployment failed: $_"
+            docker compose logs
+            exit 1
+          }
