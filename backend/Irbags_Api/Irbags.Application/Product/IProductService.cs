@@ -5,7 +5,7 @@ namespace Irbags.Application.Product
 {
     public interface IProductService
     {
-        public Task<GetProductResponse> GetProduct(Guid id);
+        //public Task<GetProductResponse> GetProduct(Guid Id);
         public Task<IReadOnlyCollection<GetProductsResponse>> GetProducts();
         public Task<CreateProductResponse> CreateProduct(CreateProductRequest request);
         public Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request);

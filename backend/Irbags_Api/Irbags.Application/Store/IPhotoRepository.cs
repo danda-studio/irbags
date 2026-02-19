@@ -9,7 +9,7 @@ namespace Irbags.Application.Store
         Task<IReadOnlyCollection<GetImageResponse>> GetImagesByProductId(Guid Id);
         Task<IReadOnlyCollection<GetImageResponse>> GetImages();
         Task<GetImageResponse?> GetImage(string key);
-        Task<AddImageResponse> AddImage(Guid? productId, string key, string extension, DateTime createdAt);
+        Task<AddImageResponse> AddImage(Guid? productId, string key, string extension);
         //Task<AddImagesResponse> AddImages(Guid? productId, string key, string extension);
         Task AddImagesBatch(List<ProductImage> images, Guid? productId);
         Task<UpdateImageResponse?> UpdateImage(string key);
