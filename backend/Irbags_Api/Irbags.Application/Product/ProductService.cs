@@ -1,5 +1,6 @@
 ﻿using Irbags.Application.Photo;
 using Irbags.Application.Photo.Models.Request;
+using Irbags.Application.Photo.Models.Response;
 using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
@@ -25,25 +26,51 @@ namespace Irbags.Application.Product
             return products;
         }
 
-        //public async Task<GetProductResponse> GetProduct(Guid Id)
-        //{
-        //    var product = await _productRepository.GetProduct(Id);
+        public async Task<GetProductResponse> GetProduct(Guid id)
+        {
+            var product = await _productRepository.GetProduct(id);
 
-        //    var images = await _photoService.GetImages();
+            if (product == null)
+                throw new KeyNotFoundException($"Product with id '{id}' not found");
 
-        //    return product ?? throw new KeyNotFoundException($"Product with id '{Id}' not found");
-        //}
+            // Загружаем изображения для этого продукта
+            var images = await _photoService.GetImagesByProductId(id);
+
+            // Обогащаем ответ данными изображений из базы
+            product.Product.Images = images.Select(i => new Models.Response.ImageItem
+            {
+                Id = i.Id,
+                ImageUrl = i.RelativeUrl
+            }).ToList();
+
+            return product;
+        }
 
         public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
+            // Валидация входных данных
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
 
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ArgumentException("Product name is required");
+
+            if (request.Price <= 0)
+                throw new ArgumentException("Product price must be greater than 0");
+
+            // Создаём продукт в репозитории
             var product = await _productRepository.CreateProduct(request);
 
-            var image = await _photoService.AddImages(new AddImagesRequest
+            // Добавляем изображения, если они есть
+            AddImagesResponse? imagesResponse = null;
+            if (request.Images != null && request.Images.Count > 0)
             {
-                ProductId = product.Id,
-                ImageItems = request.Images
-            });
+                imagesResponse = await _photoService.AddImages(new AddImagesRequest
+                {
+                    ProductId = product.Id,
+                    ImageItems = request.Images
+                });
+            }
 
             return new CreateProductResponse
             {
@@ -60,20 +87,44 @@ namespace Irbags.Application.Product
                     Id = c.Id,
                     Name = c.Name,
                 }).ToList(),
-                Images = image.Images.Select(i => new Models.Response.ImageItem
+                Images = imagesResponse?.Images.Select(i => new Models.Response.ImageItem
                 {
                     Id = i.Id,
                     ImageUrl = i.RelativeUrl
-                }).ToList()
+                }).ToList() ?? new List<Models.Response.ImageItem>()
             };
-
         }
 
         public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)
         {
+            // Валидация входных данных
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            if (request.Id == Guid.Empty)
+                throw new ArgumentException("Product Id is required");
+
+            // Обновляем продукт в репозитории
             var product = await _productRepository.UpdateProduct(request);
 
-            return product ?? throw new KeyNotFoundException($"Product not found");
+            if (product == null)
+                throw new KeyNotFoundException($"Product with id '{request.Id}' not found");
+
+            // Если передали новые изображения, добавляем их
+            if (request.Images != null && request.Images.Count > 0)
+            {
+                await _photoService.AddImages(new AddImagesRequest
+                {
+                    ProductId = request.Id,
+                    ImageItems = request.Images
+                });
+            }
+
+            return new UpdateProductResponse
+            {
+                Id = product.Id,
+                Name = product.Name,
+            };
         }
 
         public async Task<bool> DeleteProduct(Guid Id)

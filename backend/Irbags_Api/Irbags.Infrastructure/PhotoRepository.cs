@@ -119,11 +119,12 @@ namespace Irbags.Infrastructure
         }
 
 
-        public async Task<AddImageResponse> AddImage(Guid? productId, string key, string extension)
+        public async Task<AddImageResponse> AddImage(Guid? productId, string key, string extension, DateTime createdAt)
         {
             var imageEntity = new ProductImage
             {
                 Id = Guid.NewGuid(),
+                CreatedAt = createdAt,
                 Name = key,
                 Extension = extension,
             };
