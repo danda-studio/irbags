@@ -1,95 +1,217 @@
-﻿using Irbags.Application.Product.Models.Request;
+﻿
+using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
 using Irbags.Core.Product;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
 
 namespace Irbags.Infrastructure
 {
     public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _dbContext;
-
-        public ProductRepository(ApplicationDbContext dbContext) 
-        { 
-            _dbContext = dbContext; 
+        public ProductRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyCollection<GetTagResponse>> GetTags()
+        public async Task<IReadOnlyCollection<GetProductsResponse>> GetProducts()
         {
-            var tags = await _dbContext.Tags
+            var products = await _dbContext.Products
                 .AsNoTracking()
-                .Select(t => new GetTagResponse
+                .Select(p => new GetProductsResponse
                 {
-                    Id = t.Id,
-                    Name = t.Name,
-                }).ToListAsync();
-            
-            return new ReadOnlyCollection<GetTagResponse>(tags);
-        }
-
-        public async Task<GetTagResponse?> GetTag(Guid Id)
-        {
-            var tag = await _dbContext.Tags
-                .Where(t => t.Id == Id)
-                .Select(t => new GetTagResponse
-                {
-                    Id = t.Id,
-                    Name = t.Name
+                    Id = p.Id,
+                    TagId = p.TagId,
+                    Name = p.Name,
+                    Price = p.BasePrice,
+                    Description = p.Description,
+                    ShortDescription = p.ShortDescription,
+                    Discount = p.Discount,
+                    Size = p.Size,
+                    Tag = new TagItem
+                    {
+                        Id = p.Tag.Id,
+                        Name = p.Tag.Name,
+                    },
+                    Colors = p.Colors.Select(c => new ColorItem
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                    }).ToList(),
+                    Images = p.Images.Select(i => new ImageItem
+                    {
+                        Id = i.Id,
+                        ImageUrl = $"/images/{i.Name}{i.Extension}"
+                    }).ToList()
                 })
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
-            return tag;
+            return products.AsReadOnly();
         }
 
-        public async Task<CreateTagResponse> CreateTag(CreateTagRequest request)
+        public async Task<GetProductResponse> GetProduct(Guid id)
         {
-            var tag = new ProductTag
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+                throw new KeyNotFoundException($"Product with id {id} not found");
+
+            return new GetProductResponse
             {
-                Id = Guid.NewGuid(),
-                Name = request.Name
+                Product = new ProductItem
+                {
+                    Id = product.Id,
+                    TagId = product.TagId,
+                    Name = product.Name,
+                    Price = product.BasePrice,
+                    Description = product.Description,
+                    ShortDescription = product.ShortDescription,
+                    Discount = product.Discount,
+                    Size = product.Size,
+                    Tag = new TagItem
+                    {
+                        Id = product.Tag.Id,
+                        Name = product.Tag.Name,
+                    },
+                    Colors = product.Colors.Select(c => new ColorItem
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                    }).ToList(),
+                    Images = product.Images.Select(i => new ImageItem
+                    {
+                        Id = i.Id,
+                        ImageUrl = $"/images/{i.Name}{i.Extension}"
+                    }).ToList()
+                }
+            };
+        }
+
+        public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ArgumentException("Product name is required");
+
+            if (request.Price <= 0)
+                throw new ArgumentException("Product price must be greater than 0");
+
+            if (request.TagId == Guid.Empty)
+                throw new ArgumentException("TagId is required");
+
+            var colors = await _dbContext.Colors
+                .Where(c => request.ColorIds.Contains(c.Id))
+                .ToListAsync();
+
+            if (!colors.Any())
+                throw new ArgumentException("At least one color is required");
+
+            var images = request.Images?
+                .Select(i => new ProductImage
+                {
+                    Id = Guid.NewGuid(),
+                    Name = i.Key,
+                    Extension = i.Image.Extension
+                })
+                .ToList() ?? new List<ProductImage>();
+
+            var product = new Product
+            {
+                Id = request.Id,
+                Name = request.Name,
+                BasePrice = request.Price,
+                Discount = request.Discount >= 0 ? request.Discount : 0,
+                Description = request.Description,
+                ShortDescription = request.ShortDescription,
+                Size = request.Size,
+                TagId = request.TagId,
+                Colors = colors,
+                Images = images,
             };
 
-            _dbContext.Tags.Add(tag);
+            _dbContext.Products.Add(product);
             await _dbContext.SaveChangesAsync();
 
-            return new CreateTagResponse
+            return new CreateProductResponse
             {
-                Id = tag.Id,
-                Name = tag.Name
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.BasePrice,
+                Discount = product.Discount,
+                Description = product.Description,
+                ShortDescription = product.ShortDescription,
+                Size = product.Size,
+                TagId = product.TagId,
+                Colors = colors.Select(c => new ColorItem
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                }).ToList()
             };
         }
 
-        public async Task<UpdateTagResponse?> UpdateTag(UpdateTagRequest request)
+        public async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request)
         {
-            var tag = await _dbContext.Tags
-                .FirstOrDefaultAsync(t => t.Id == request.Id);
+            var product = await _dbContext.Products
+                .Include(p => p.Colors)
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Id == request.Id);
 
-            if (tag == null)
-                return null;
+            if (product == null)
+                throw new Exception("Product not found");
 
-            tag.Name = request.Name;
+            if (!string.IsNullOrWhiteSpace(request.Name))
+                product.Name = request.Name;
+
+            if (!string.IsNullOrWhiteSpace(request.Description))
+                product.Description = request.Description;
+
+            if (!string.IsNullOrWhiteSpace(request.ShortDescription))
+                product.ShortDescription = request.ShortDescription;
+
+            if (!string.IsNullOrWhiteSpace(request.Size))
+                product.Size = request.Size;
+
+            if (request.Price > 0)
+                product.BasePrice = request.Price;
+
+            if (request.Discount > 0 && request.Discount <= 100)
+                product.Discount = request.Discount;
+
+            if (request.TagId != Guid.Empty)
+                product.TagId = request.TagId;
+
+            if (request.ColorIds != null && request.ColorIds.Count > 0)
+            {
+                var colors = await _dbContext.Colors
+                    .Where(c => request.ColorIds.Contains(c.Id))
+                    .ToListAsync();
+
+                product.Colors = colors;
+            }
+
+            _dbContext.Products.Update(product);
             await _dbContext.SaveChangesAsync();
 
-            return new UpdateTagResponse
+            return new UpdateProductResponse
             {
-                Id = tag.Id,
-                Name = tag.Name
+                Id = product.Id,
+                Name = product.Name,
             };
         }
 
-        public async Task<bool> DeleteTag(Guid Id)
+        public async Task<bool> DeleteProduct(Guid Id)
         {
-            var tag = _dbContext.Tags
-                .FirstOrDefault(t => t.Id == Id);
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(p => p.Id == Id);
 
-            if (tag == null) 
-              return false;
+            if (product == null)
+                return false;
 
-            _dbContext.Tags.Remove(tag);
-            await _dbContext.SaveChangesAsync(); 
-            
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
+
             return true;
         }
     }

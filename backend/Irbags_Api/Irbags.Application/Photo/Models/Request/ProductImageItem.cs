@@ -1,7 +1,8 @@
 ﻿
 namespace Irbags.Application.Photo.Models.Request
 {
-    public class CreateImageRequest
+    public class ProductImageItem
     {
+
     }
 }

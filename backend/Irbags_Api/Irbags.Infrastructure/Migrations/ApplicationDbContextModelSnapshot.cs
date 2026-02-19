@@ -80,6 +80,10 @@ namespace Irbags.Infrastructure.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("double precision");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -140,6 +144,10 @@ namespace Irbags.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()

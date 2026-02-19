@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Irbags.Application.Photo.Models.Request;
+using Irbags.Application.Photo.Models.Response;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 
@@ -19,23 +22,66 @@ namespace Irbags.Application.Photo
             }
         }
 
-        public async Task<string> SaveFile(IFormFile imageFile, string[] allowedFileExtensions, string fileNameWithExtension)
+        public async Task<string> SaveFile(FileUploadImageItem file, string[] allowedExtensions)
         {
-            if (imageFile == null) throw new ArgumentNullException(nameof(imageFile));
-            if (string.IsNullOrWhiteSpace(fileNameWithExtension)) throw new ArgumentException("File name cannot be empty.");
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+            
+            var baseUrl = _settings.BaseUrl.TrimEnd('/');
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            
+            if (!allowedExtensions.Contains(extension))
+                throw new ArgumentException("Invalid file extension");
 
-            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-            if (!allowedFileExtensions.Contains(extension))
-                throw new ArgumentException($"Only {string.Join(", ", allowedFileExtensions)} files are allowed.");
+            var filePath = Path.Combine(_settings.UploadPath, file.FileName);
 
-            var filePath = _settings.UploadPath.TrimEnd('/') + "/" + fileNameWithExtension;
+            await using var output = new FileStream(
+                filePath,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.None);
 
-            await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            await imageFile.CopyToAsync(stream);
-            await stream.FlushAsync();
+            await file.Content.CopyToAsync(output);
 
-            return fileNameWithExtension;
+            return $"{baseUrl}uploads/{file.FileName}";
+
         }
+
+        public async Task<List<SaveFilesResponse>> SaveFiles(List<FileUploadImageItem> files, string[] allowedExtensions)
+        {
+            if (files.Count() == 0)
+                throw new ArgumentException("The number of files cannot be 0");
+
+            var baseUrl = _settings.BaseUrl.TrimEnd('/');
+            var fileName = new List<SaveFilesResponse>();
+
+            foreach(var file in files)
+            {
+                var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+                if (!allowedExtensions.Contains(extension))
+                    throw new ArgumentException("Invalid file extension");
+
+                var filePath = Path.Combine(_settings.UploadPath, file.FileName);
+
+                await using var output = new FileStream(
+                    filePath,
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.None);
+
+                await file.Content.CopyToAsync(output);
+
+                fileName.Add(new SaveFilesResponse
+                {
+                    Key = file.FileName,
+                    ImageUrl = $"{baseUrl}uploads/{file.FileName}"
+                });
+
+            }
+
+            return fileName;
+        }
+
 
         public void DeleteFile(string fileNameWithExtension)
         {

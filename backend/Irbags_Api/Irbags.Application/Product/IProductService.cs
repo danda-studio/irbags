@@ -1,16 +1,14 @@
-﻿
-using Irbags.Application.Product.Models.Request;
+﻿using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 
 namespace Irbags.Application.Product
 {
     public interface IProductService
     {
-        public Task<GetTagResponse> GetTag(Guid tagId);
-        public Task<IReadOnlyCollection<GetTagResponse>> GetTags();
-        public Task<CreateTagResponse> CreateTag(CreateTagRequest request);
-        public Task<UpdateTagResponse> UpdateTag(UpdateTagRequest request);
-        public Task<bool> DeleteTag(Guid tagId);
-        
+        public Task<GetProductResponse> GetProduct(Guid id);
+        public Task<IReadOnlyCollection<GetProductsResponse>> GetProducts();
+        public Task<CreateProductResponse> CreateProduct(CreateProductRequest request);
+        public Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request);
+        public Task<bool> DeleteProduct(Guid Id);
     }
 }

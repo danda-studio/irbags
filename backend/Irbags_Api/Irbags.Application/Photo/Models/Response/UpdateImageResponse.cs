@@ -3,7 +3,8 @@ namespace Irbags.Application.Photo.Models.Response
 {
     public class UpdateImageResponse
     {
-        public Guid Id { get; set; }
-        public string Key { get; set; }
+        public Guid ProductId { get; set; }
+        public string Name { get; set; }
+        public string RelativeUrl { get; set; }
     }
 }
