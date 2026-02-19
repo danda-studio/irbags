@@ -32,8 +32,8 @@ namespace Irbags.Application.Photo
         public async Task<GetImageResponse> GetImage(string key)
         {
             var image = await _photoRepository.GetImage(key);
-            
-            if(image == null)
+
+            if (image == null)
             {
                 throw new KeyNotFoundException($"Image with key '{key}' not found");
             }
@@ -61,7 +61,7 @@ namespace Irbags.Application.Photo
 
             var image = await _photoRepository.UpdateImage(request.Key);
 
-            if(image == null)
+            if (image == null)
             {
                 throw new KeyNotFoundException($"Image not found");
             }
@@ -96,6 +96,7 @@ namespace Irbags.Application.Photo
             var images = savedFiles.Select(file => new ProductImage
             {
                 Id = Guid.NewGuid(),
+                CreatedAt = DateTime.Now,
                 Name = file.FileName,
                 Extension = Path.GetExtension(file.FileName)
             }).ToList();
@@ -127,7 +128,7 @@ namespace Irbags.Application.Photo
 
             var savedFileName = await _fileService.SaveFile(request.Image, _allowedExtensions);
 
-            var image = await _photoRepository.AddImage(request.ProductId, request.Image.FileName, extension);
+            var image = await _photoRepository.AddImage(request.ProductId, request.Image.FileName, extension, DateTime.Now);
 
             return new AddImageResponse
             {

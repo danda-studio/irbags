@@ -102,7 +102,7 @@ namespace Irbags.Infrastructure
                 var product = await _dbContext.Products
                     .Include(p => p.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId);
-                
+
                 if (product != null)
                 {
                     product.Images ??= new List<ProductImage>();
@@ -115,15 +115,16 @@ namespace Irbags.Infrastructure
 
             _dbContext.ProductImages.AddRange(images);
 
-            await _dbContext.SaveChangesAsync(); 
+            await _dbContext.SaveChangesAsync();
         }
 
 
-        public async Task<AddImageResponse> AddImage(Guid? productId, string key, string extension)
+        public async Task<AddImageResponse> AddImage(Guid? productId, string key, string extension, DateTime createdAt)
         {
             var imageEntity = new ProductImage
             {
                 Id = Guid.NewGuid(),
+                CreatedAt = createdAt,
                 Name = key,
                 Extension = extension,
             };

@@ -1,13 +1,9 @@
-﻿using Irbags.Application.Photo.Models.Request;
-using Irbags.Application.Photo.Models.Response;
+﻿
 using Irbags.Application.Product.Models.Request;
 using Irbags.Application.Product.Models.Response;
 using Irbags.Application.Store;
 using Irbags.Core.Product;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
-using static System.Net.Mime.MediaTypeNames;
-using ImageItem = Irbags.Application.Product.Models.Response.ImageItem;
 
 namespace Irbags.Infrastructure
 {
@@ -21,45 +17,77 @@ namespace Irbags.Infrastructure
 
         public async Task<IReadOnlyCollection<GetProductsResponse>> GetProducts()
         {
+            var products = await _dbContext.Products
+                .AsNoTracking()
+                .Select(p => new GetProductsResponse
+                {
+                    Id = p.Id,
+                    TagId = p.TagId,
+                    Name = p.Name,
+                    Price = p.BasePrice,
+                    Description = p.Description,
+                    ShortDescription = p.ShortDescription,
+                    Discount = p.Discount,
+                    Size = p.Size,
+                    Tag = new TagItem
+                    {
+                        Id = p.Tag.Id,
+                        Name = p.Tag.Name,
+                    },
+                    Colors = p.Colors.Select(c => new ColorItem
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                    }).ToList(),
+                    Images = p.Images.Select(i => new ImageItem
+                    {
+                        Id = i.Id,
+                        ImageUrl = $"/images/{i.Name}{i.Extension}"
+                    }).ToList()
+                })
+                .ToListAsync();
 
-            return new List<GetProductsResponse>();
+            return products.AsReadOnly();
         }
 
-        //public async Task<GetProductResponse> GetProduct(Guid Id)
-        //{
-        //    var product = await _dbContext.Products
-        //        .FirstOrDefaultAsync(p => p.Id == Id);
+        public async Task<GetProductResponse> GetProduct(Guid id)
+        {
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-        //    if (product == null) 
-        //        return new GetProductResponse();
+            if (product == null)
+                throw new KeyNotFoundException($"Product with id {id} not found");
 
-        //    return new GetProductResponse
-        //    {
-        //        Product = new ProductItem
-        //        {
-        //            Id = product.Id,
-        //            TagId = product.TagId,
-        //            Name = product.Name,
-        //            Price = product.BasePrice,
-        //            Description = product.Description,
-        //            ShortDescription = product.ShortDescription,
-        //            Discount = product.Discount,
-        //            Size = product.Size,
-        //            Tag = new TagItem
-        //            {
-        //                Id = product.Tag.Id,
-        //                Name = product.Tag.Name,
-        //            },
-        //            Colors = product.Colors.Select(c => new ColorItem
-        //            {
-        //                Id = c.Id,
-        //                Name = c.Name,
-        //            }).ToList()
-        //        }
-
-        //    };
-            
-        //}
+            return new GetProductResponse
+            {
+                Product = new ProductItem
+                {
+                    Id = product.Id,
+                    TagId = product.TagId,
+                    Name = product.Name,
+                    Price = product.BasePrice,
+                    Description = product.Description,
+                    ShortDescription = product.ShortDescription,
+                    Discount = product.Discount,
+                    Size = product.Size,
+                    Tag = new TagItem
+                    {
+                        Id = product.Tag.Id,
+                        Name = product.Tag.Name,
+                    },
+                    Colors = product.Colors.Select(c => new ColorItem
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                    }).ToList(),
+                    Images = product.Images.Select(i => new ImageItem
+                    {
+                        Id = i.Id,
+                        ImageUrl = $"/images/{i.Name}{i.Extension}"
+                    }).ToList()
+                }
+            };
+        }
 
         public async Task<CreateProductResponse> CreateProduct(CreateProductRequest request)
         {
@@ -119,12 +147,6 @@ namespace Irbags.Infrastructure
                 {
                     Id = c.Id,
                     Name = c.Name,
-                }).ToList(),
-                Images = images.Select(i => new ImageItem
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Extension = i.Extension
                 }).ToList()
             };
         }
