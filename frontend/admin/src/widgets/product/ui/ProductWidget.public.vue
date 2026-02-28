@@ -1,15 +1,15 @@
 <script setup lang="ts">
-type Product = {
-  id: number
-  title: string
-  price: number
+interface Product {
+  id: number;
+  title: string;
+  price: number;
 }
 
 const products: Product[] = Array.from({ length: 16 }, (_, i) => ({
   id: i + 1,
   title: `Сумка Kelly ${i + 1}`,
   price: 69,
-}))
+}));
 </script>
 
 <template>

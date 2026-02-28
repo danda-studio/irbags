@@ -1,3 +1,3 @@
 <template>
-  <NewProductPage />
+  <ProductPage />
 </template>
